@@ -1,0 +1,20 @@
+<section class="grid-container">
+    <div class="row">
+      <!-- Itérer sur les articles et afficher trois cartes par ligne -->
+      <div class="card-container">
+        <div class="card" *ngFor="let article of articles">
+          <img [src]="article.photo" class="card-img-top" alt="">
+          <div class="card-body">
+            <h5 class="card-title">{{ article.titre }}</h5>
+            <p class="card-text">{{ article.description }}</p>
+            <p class="card-text">Prix : {{ article.prix }}</p>
+            <p class="card-text">Livrable : {{ article.livrable }}</p>
+            <p class="card-text">Statut : {{ article.statut }}</p>
+            <p class="card-text">Quantité : {{ article.quantiter }}</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  

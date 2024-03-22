@@ -1,0 +1,76 @@
+<div class="container" style="background: linear-gradient(to right, rgb(243, 248, 255), #5b68f5);">
+    <form #f="ngForm" (ngSubmit)="envoyerDemandeVendeur()" >
+        <h3> Demande Vendeur </h3>
+        <div class="form-row">
+      <div class="form-group col-lg-6">
+        <label for="nom">Nom</label>
+        <input type="text" class="form-control" id="nom" [(ngModel)]="vendeur.nom" name="nom">
+      </div>  
+        <div class="form-group col-lg-6">
+            <div class="form-group col-lg-6">
+                <label for="prenom">Prénom</label>
+                <input type="text" class="form-control" id="prenom" [(ngModel)]="vendeur.prenom" name="prenom">
+              </div>
+        
+      </div>
+      <div class="form-group col-lg-6">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" [(ngModel)]="vendeur.password" name="password">
+      </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-lg-6">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" [(ngModel)]="vendeur.email" name="email">
+    </div>
+        <div class="form-group col-lg-6">
+        <label for="tel">Telephone</label>
+        <input type="text" class="form-control" id="tel" [(ngModel)]="vendeur.tel" name="tel">
+      </div>
+      <div class="form-group col-lg-6">
+     
+        <label for="codePostal">Code Postal</label>
+        <input type="number" class="form-control" id="codePostal" [(ngModel)]="vendeur.codePostal" name="codePostal">
+      </div>
+      </div>
+      <div class="form-row">
+        
+      <div class="form-group col-lg-6">
+        <label for="pays">Pays</label>
+        <input type="text" class="form-control" id="pays" [(ngModel)]="vendeur.pays" name="pays">
+      </div>
+    
+        <div class="form-group col-lg-6">
+        <label for="ville">Ville</label>
+        <input type="text" class="form-control" id="ville" [(ngModel)]="vendeur.ville" name="ville">
+      </div>
+       
+      <div class="form-group col-lg-6">
+        <label for="cin">CIN</label>
+        <input type="text" class="form-control" id="cin" [(ngModel)]="vendeur.cin" name="cin">
+      </div>
+    </div>
+    <div class="form-row">
+    
+        <div class="form-group col-lg-6">
+        <label for="longitude">Longitude</label>
+        <input type="text" class="form-control" id="longitude" step="any" [(ngModel)]="vendeur.longitude" name="longitude">
+      </div>
+      <div class="form-group col-lg-6">
+        <label for="latitude">Latitude</label>
+        <input type="text" class="form-control" id="latitude" step="any" [(ngModel)]="vendeur.latitude" name="latitude">
+      </div>
+
+      <div class="form-group col-lg-6">
+        <label for="photo">Photo URL</label>
+        <input type="text" class="form-control" id="photo" [(ngModel)]="vendeur.photo" name="photo">
+      </div>
+      </div>
+    
+      <button type="submit" class="btn btn-primary">Send</button>
+      <button type="button" class="btn btn-secondary" (click)="annulerFormulaire()">Cancel</button>
+    </form>
+
+   
+  </div>
+  

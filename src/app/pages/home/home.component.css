@@ -1,0 +1,57 @@
+.pt-24 {
+    /* Ajustez le padding-top pour laisser de l'espace pour l'image */
+    padding-top: 5px; /* Vous pouvez ajuster cette valeur selon vos besoins */
+  }
+  .absolute inset-0 object-cover object-center w-full h-full{
+    background-position: center; /* Centrer l'image de fond */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Utilisation de la hauteur de l'écran */
+    margin: 0;
+    min-height: 100vh;
+  
+  }
+  .navbar-images {
+    position: relative;
+    height: 100%; /* Ajustez la hauteur en fonction de vos besoins */
+    width: auto;
+  }
+  
+  .navbar-image {
+    height: 100%; /* Ajustez la taille de l'image en fonction de la hauteur de la barre de navigation */
+    width: auto;
+    position: relative;
+    z-index: 1; /* Assurez-vous que l'image est au-dessus des flèches */
+  }
+  
+  .nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: transparent;
+    border: none;
+    font-size: 150px; 
+    color: #fff; /* Couleur des flèches */
+   
+    cursor: pointer;
+    z-index: 2; /* Assurez-vous que les flèches sont au-dessus de l'image */
+  }
+  
+  .nav-arrow:hover {
+    color: #ccc; /* Couleur des flèches au survol */
+  }
+  
+  .nav-arrow:first-child {
+    left: 0;
+  }
+  
+  .nav-arrow:nth-child(2) {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .nav-arrow:last-child {
+    right: 0;
+  }
+  

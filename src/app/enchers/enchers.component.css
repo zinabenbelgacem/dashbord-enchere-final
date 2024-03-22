@@ -1,0 +1,30 @@
+.professional-table {
+    border-collapse: collapse; /* Remove extra spacing between cells */
+    font-family: Arial, sans-serif; /* Set a professional font */
+    font-size: 14px; /* Set a readable font size */
+    width: 100%; /* Make the table responsive */
+  }
+  
+  .professional-table th,
+  .professional-table td {
+    padding: 10px; /* Add padding for better readability */
+    text-align: left; /* Align text to the left */
+  }
+  
+  .professional-table thead th {
+    background-color: #b3b0b0;
+   
+  }
+  .custom-button {
+    margin-top: 20px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+    background-color: #3c10da; /* Adjust background color as needed */
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  

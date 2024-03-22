@@ -1,0 +1,31 @@
+<div class="container table-container">
+    <button type="button" class="custom-button" (click)="participerEnchere()">
+        Participer à l'enchère
+      </button>
+    <table class="table table-striped table-bordered table-hover professional-table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Date de début</th>
+                <th scope="col">Date de fin</th>
+                <th scope="col">Articles</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let enchere of encheres">
+                <td>{{ enchere?.dateDebut ? formatDate(parseDate(enchere.dateDebut)) : '' }}</td>
+                <td>{{ enchere?.dateFin ? formatDate(parseDate(enchere.dateFin)) : '' }}</td>
+                
+                <td>
+                    <ng-container *ngIf="enchere.articles">
+                        <span *ngFor="let articleId of enchere.articles">
+                            {{ getArticleTitle(articleId.id) }}
+                        </span>
+                    </ng-container>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+         
+ 
