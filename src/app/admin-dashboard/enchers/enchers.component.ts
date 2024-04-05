@@ -3,20 +3,24 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ArticleService } from '../article.service';
-import {  Subject } from 'rxjs';
+import {  Observable, Subject } from 'rxjs';
 import { EnchereService } from '../enchers-service.service';
 
 import { Router } from '@angular/router';
+
 interface Enchere {
   id?: number;
   dateDebut: string;
   dateFin: string;
-  parten: { id: number };
+  parten: { id: number}; 
   admin: { id: number };
   articles: { id: number }[];
 }
+interface admin{
+  id?: number;
+}
 interface Article {
-  id: number; // Assurez-vous que le type correspond à votre base de données
+  id: number;
   titre: string;
   description: string;
   photo: string;
@@ -24,6 +28,9 @@ interface Article {
   livrable:boolean;
   statut:string;
   quantiter?: number;
+}
+interface Part_En{
+  id: number;
 }
 let enchereData: Enchere[] = [];
 @Component({
@@ -85,6 +92,9 @@ parseDate(dateString: string): number | undefined {
     this.getAllAdmins();
     this.getAllArticles();
   }
+  addPartEn(partEn: Part_En): Observable<Part_En> {
+    return this.encherService.addPart_En(partEn);
+  }
   formatDate(timestamp: number | undefined): string {
     if (!timestamp) return ''; // Si le timestamp est indéfini, retourne une chaîne vide
 
@@ -118,7 +128,6 @@ getAllArticles() {
       },
       (error: HttpErrorResponse) => {
         console.error('Error fetching partens:', error);
-        // Gérer les erreurs si nécessaire
       }
     );
   }
@@ -130,7 +139,6 @@ getAllArticles() {
       },
       (error: HttpErrorResponse) => {
         console.error('Error fetching admins:', error);
-        // Gérer les erreurs si nécessaire
       }
     );
   }
@@ -139,6 +147,15 @@ getAllArticles() {
     this.encherService.getAllEncheres().subscribe(
       (encheres: Enchere[]) => {
         this.encheres = encheres;
+        console.log("Enchères récupérées :", encheres); // Afficher toutes les enchères récupérées dans la console
+        // Parcourir chaque enchère pour afficher l'ID de l'administrateur
+        encheres.forEach(enchere => {
+          if (enchere.admin && enchere.admin.id) {
+            console.log("ID de l'administrateur pour cette enchère :", enchere.admin.id);
+          } else {
+            console.log("Aucun administrateur associé à cette enchère.");
+          }
+        });
         this.loading = false;
       },
       (error: HttpErrorResponse) => {
@@ -149,7 +166,7 @@ getAllArticles() {
         });
       }
     );
-  }
+  }  
   async getArticleTitle(articleId: number): Promise<string> {
     try {
         const article = this.articles.find(article => article.id === articleId);
@@ -165,16 +182,38 @@ getAllArticles() {
     }
 }
 
-  participerEnchere(){
-
-  }
-  onCreate() {
+participerEnchere(userId: number, enchereId: number) {
+  this.encherService.participateInEnchere(userId, enchereId).subscribe(
+    () => {
+      // Mettez à jour les données après la participation à l'enchère
+      this.getAllEncheres(); // Met à jour la liste des enchères après la participation
+      /* Affichez un message de succès à l'utilisateur
+      this.snackBar.open('Vous avez participé à l\'enchère avec succès!', 'Fermer', {
+        duration: 3000
+      });*/
+    },
+    (error: HttpErrorResponse) => {
+      if (error.status !== 200) {
+        console.error('Erreur lors de la participation à l\'enchère :', error);
+        // Affichez un message d'erreur à l'utilisateur uniquement si le statut de la réponse est différent de 200
+        this.snackBar.open('Erreur lors de la participation à l\'enchère', 'Fermer', {
+          duration: 3000
+        });
+      }else{
+        this.snackBar.open('Vous avez participé à l\'enchère avec succès!', 'Fermer', {
+          duration: 3000
+        });
+      }
+    }
+  );
+}
+ onCreate() {
     this.showAddForm = true;
     if (this.myForm.valid) {
-      const selectedUser = this.partens.find(partens => partens.id === this.myForm.value.parten); // Trouver l'utilisateur correspondant au nom sélectionné
-      const selectedAdmin = this.admins.find(admin => admin.nom === this.myForm.value.admin); // Trouver l'administrateur correspondant au nom sélectionné
+      const selectedUser = this.partens.find(partner => partner.id === this.myForm.value.parten);
+      const selectedAdmin = this.admins.find(admin => admin.id === this.myForm.value.admin);
 
-      if (selectedUser && selectedAdmin) { // Vérifier si l'utilisateur et l'administrateur ont été trouvés
+      if (selectedUser && selectedAdmin) {
         const newEnchere: Enchere = {
           id: this.myForm.value.id,
           dateFin: this.formattedDateFin,
@@ -183,8 +222,8 @@ getAllArticles() {
           admin: { id: selectedAdmin.id },
           articles: this.myForm.value.articles.map((article: any) => ({ id: article.id }))
         };
-        
-    
+        /*this.addPartEn({ id: 1 }).subscribe(() => {
+        });*/
         this.encherService.addEnchere(newEnchere).subscribe(
           (response: any) => {
             this.myForm.reset();
@@ -208,8 +247,6 @@ getAllArticles() {
       }
     }
   }
-
-
   cancelCreation() {
     // Réinitialisez le formulaire d'enchère
     this.myForm.reset();
@@ -236,7 +273,7 @@ getAllArticles() {
               this.editForm.reset();
               this.editMode = false;
               this.snackBar.open('Enchère mise à jour avec succès!', 'Fermer', { duration: 3000 });
-            },
+          },
             (error: HttpErrorResponse) => {
               console.error('Erreur lors de la mise à jour de l\'enchère :', error);
               this.snackBar.open('Erreur lors de la mise à jour de l\'enchère', 'Fermer', { duration: 3000 });

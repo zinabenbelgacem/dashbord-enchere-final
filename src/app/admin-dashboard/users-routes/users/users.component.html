@@ -1,26 +1,6 @@
 <app-header></app-header>
-<div class="flex">
-    <div class="px-5 pb-10">
-    <div class="flex">
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <a class="sidebar-title">Enchères</a>
-            </div>
-            <div class="sidebar-links">
-                <div *ngFor="let link of links">
-                    <p class="sidebar-subtitle">{{link.title}}</p>
-                    <ul class="sidebar-list">
-                        <li *ngFor="let item of link.items" class="sidebar-item">
-                            <a class="sidebar-link" (click)="navigateTo(item.name)">
-                                <i class="{{item.icon}} sidebar-icon"></i>
-                                <span class="sidebar-text">{{item.name ? item.name : 'overview'}}</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-<div class="container">
+<app-sidebar></app-sidebar>
+<div class="containerr">
     <div class="header">
         <h1  style="text-align: center; font-style: normal; margin-bottom: 30px;">Liste Utilisateurs</h1>
     </div>
@@ -55,7 +35,7 @@
                         <td>
                             <ng-container *ngIf="user?.photo">
                                 <!-- Assurez-vous que user.photo est de type string -->
-                                <img *ngIf="isValidURL(user.photo.toString())" [src]="user?.photo" alt="article Image" class="card-img-top"/>
+                                <img *ngIf="isValidURL(user.photo.toString())" [src]="user?.photo" alt="article Image" class="card-img-top" class="article_Image"/>
 
                                 <!-- Assurez-vous que user.photo est de type string -->
                                 <span *ngIf="!isValidURL(user.photo.toString())">Aucune image disponible pour le moment</span>

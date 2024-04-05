@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
-import { User } from './_service/user'; // Assurez-vous d'importer correctement le modèle User
 interface Enchere {
   id?: number;
   dateDebut: string;
@@ -9,6 +8,7 @@ interface Enchere {
   parten: { id: number };
   admin: { id: number };
   articles: { id: number }[];
+  meetingId?: string; 
 }
 interface Article {
   id: number; // Assurez-vous que le type correspond à votre base de données
@@ -24,8 +24,6 @@ interface Article {
   providedIn: 'root'
 })
 export class EnchersServiceService {
-
- 
   constructor(private http: HttpClient) { }
 
   getAllArticles(): Observable<any[]> {
@@ -42,7 +40,9 @@ export class EnchersServiceService {
     return this.http.get<any[]>(`http://localhost:3003/admins`);
   }
 
-
+  getArticlesForEnchere(enchereId: number): Observable<Article[]> {
+    return this.http.get<Article[]>(`http://localhost:3002/enchere/${enchereId}/articles`);
+  }
   addEnchere(enchere: Enchere): Observable<Enchere> {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -70,7 +70,21 @@ export class EnchersServiceService {
   getAllEncheres(): Observable<Enchere[]> {
     return this.http.get<Enchere[]>('http://localhost:3002/enchere/getallEncheres');
   }
-
+  participateInEnchere(userId: number, enchereId: number): Observable<any> {
+    return this.http.post<any>(`http://localhost:3002/enchere/${userId}/participate/${enchereId}`, {});
+  }
+  findUserIdByNom(nomuser: string): Observable<number> {
+    return this.http.get<number>(`http://localhost:3003/api/${nomuser}`).pipe(
+      catchError(error => {
+        let errorMessage = 'Une erreur s\'est produite lors de la recherche de l\'utilisateur.';
+        if (error.status === 404) {
+          errorMessage = `Utilisateur non trouvé avec le nom : ${nomuser}`;
+        }
+        console.error(errorMessage);
+        return throwError(errorMessage);
+      })
+    );
+  }
   getEnchereById(id: number): Observable<Enchere> {
     return this.http.get<Enchere>(`http://localhost:3002/enchere/${id}`);
   }

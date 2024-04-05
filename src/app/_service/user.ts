@@ -13,5 +13,5 @@ export class User {
     longitude: number = 0; 
     latitude: number = 0;
     photo: String=''
- 
+   
 }

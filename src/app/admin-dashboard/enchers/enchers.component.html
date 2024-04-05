@@ -1,33 +1,13 @@
 <app-header></app-header>
-<div class="flex">
-    <div class="px-5 pb-10">
-    <div class="flex">
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <a class="sidebar-title">Enchères</a>
-            </div>
-            <div class="sidebar-links">
-                <div *ngFor="let link of links">
-                    <p class="sidebar-subtitle">{{link.title}}</p>
-                    <ul class="sidebar-list">
-                        <li *ngFor="let item of link.items" class="sidebar-item">
-                            <a class="sidebar-link" (click)="navigateTo(item.name)">
-                                <i class="{{item.icon}} sidebar-icon"></i>
-                                <span class="sidebar-text">{{item.name ? item.name : 'overview'}}</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+<app-sidebar></app-sidebar>
 <div *ngIf="loading" class="loading-container">
   <span class="spinner-border mr-2" role="status" aria-hidden="true"></span>
   <span class="h5 mb-0 text-muted">Chargement des enchères...</span>
 </div>
 
 <h1 class="header">Gestion Enchères</h1>
-<button type="button" class="add" (click)="onCreate()">
-  <i class="material-icons"></i>Ajouter Enchère
+<button type="button" class="add" (click)="onCreate()" style=" font-style: normal;border-radius: 10px;margin-right: 20px;">
+  Ajouter Enchère
 </button>
 <div *ngIf="showAddForm" class="form-container">
   <h2>Ajouter enchère</h2>
@@ -44,8 +24,8 @@
         </div>
         <div class="form-group">
           <label for="user">Numéro Participant</label>
-          <select class="form-control" id="user" formControlName="user" required>
-            <option *ngFor="let user of partens" [value]="user.id">{{ user.id }}</option>
+          <select class="form-control" id="parten" formControlName="parten" required>
+            <option *ngFor="let parten of partens" [value]="parten.id">{{ parten.id }}</option>
           </select>
         </div>
       </div>
@@ -71,8 +51,8 @@
   </form>
 </div>
 
-<div class="container table-container">
-  <table class="table table-striped table-bordered table-hover">
+<div class="table-container">
+  <table class="table">
     <thead class="thead-dark">
       <tr>
         <th scope="col">Date de début</th>
@@ -87,13 +67,9 @@
         <td>{{ enchere?.dateDebut ? formatDate(parseDate(enchere.dateDebut)) : '' }}</td>
         <td>{{ enchere?.dateFin ? formatDate(parseDate(enchere.dateFin)) : '' }}</td>
         
-        <td>{{ enchere?.admin?.id }}</td>
+        <td>{{ enchere.admin ? enchere.admin.id : 'Aucun administrateur associé' }}</td>
+
         <td>{{ enchere?.parten?.id }}</td>
-        <!--<td>
-          <ng-container *ngIf="enchere.articles">
-            <span *ngFor="let articleId of enchere.articles">{{ getArticleTitle(articleId.id) }}</span>
-          </ng-container>
-        </td>-->
         <td>
           <button type="button" class="btn btn-edit" (click)="editEnchere(enchere)">
             <i class="fas fa-edit"></i>

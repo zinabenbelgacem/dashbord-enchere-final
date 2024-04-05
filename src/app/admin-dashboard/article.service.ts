@@ -1,16 +1,23 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 interface Article {
-  
-  id: number; // Assurez-vous que le type correspond à votre base de données
+  id: number; 
   titre: string;
   description: string;
   photo: string;
   prix:string;
+  prixvente:string;
   livrable:boolean;
   statut:string;
   quantiter:number;
+  categorie: Categorie;
+}
+interface Categorie {
+  id: number; 
+  titre: string;
+  description: string;
+  image: string;
 }
 @Injectable({
   providedIn: 'root'
@@ -19,7 +26,9 @@ export class ArticleService {
   private baseUrl = 'http://localhost:3002/article'; 
 
   constructor(private http: HttpClient) { }
-
+  getAllCategories(): Observable<Categorie[]> {
+    return this.http.get<Categorie[]>(`http://localhost:3002/categorie/getallcategories`);
+  }
   getAllArticles(): Observable<Article[]> {
     return this.http.get<Article[]>(`${this.baseUrl}/getAll`);
   }
@@ -29,7 +38,13 @@ export class ArticleService {
   }
 
   addArticle(data: Article): Observable<Article> {
-    return this.http.post<Article>(`${this.baseUrl}/addArticle`, data); }
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post<Article>(`${this.baseUrl}/addArticle`, data); 
+  }
 
 
   updateArticle(id: string, data: Article): Observable<Article> {

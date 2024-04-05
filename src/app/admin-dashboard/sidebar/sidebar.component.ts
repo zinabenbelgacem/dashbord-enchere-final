@@ -33,17 +33,26 @@ export class SidebarComponent {
           icon: 'fa-solid fa-bag-shopping',
         },
         {
-          name: 'categories',
+          name: 'categorie',
           icon: 'fa-solid fa-dumpster-fire',
         },
         {
-          name: 'comments',
-          icon: 'fa-solid fa-comment',
+          name: 'article',
+          icon: 'fas fa-box',
         },
         {
-          name: 'customers',
+          name: 'demande-vendeur',
           icon: 'fa-solid fa-users',
-        }, {
+        },
+        {
+          name: 'paiment',
+          icon: 'fa-solid fa-users',
+        },
+        {
+          name: 'commentaire',
+          icon: 'fa-solid fa-comment',
+        },
+       {
           name: 'tags',
           icon: 'fa-solid fa-tag'
         }
