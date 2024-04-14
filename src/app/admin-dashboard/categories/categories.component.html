@@ -1,29 +1,9 @@
 <app-header></app-header>
-<div class="flex">
-    <div class="px-5 pb-10">
-    <div class="flex">
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <a class="sidebar-title">Enchères</a>
-            </div>
-            <div class="sidebar-links">
-                <div *ngFor="let link of links">
-                    <p class="sidebar-subtitle">{{link.title}}</p>
-                    <ul class="sidebar-list">
-                        <li *ngFor="let item of link.items" class="sidebar-item">
-                            <a class="sidebar-link" (click)="navigateTo(item.name)">
-                                <i class="{{item.icon}} sidebar-icon"></i>
-                                <span class="sidebar-text">{{item.name ? item.name : 'overview'}}</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+<app-sidebar></app-sidebar>
         <div *ngIf="loading" class="loading">Chargement des catégories...</div>
         <h2 class="header">Liste catégories</h2>
-        <button type="button" class="btn-add" style=" font-style: normal;" (click)="onCreate()">
-          <i class="material-icons"></i>Ajouter catégorie
+        <button type="button" class="btn-add" style=" font-style: normal;border-radius: 10px;margin-right: 20px;"(click)="onCreate()">
+          <i class="fas fa-pencil-alt"></i> Ajouter
         </button>
         <div *ngIf="onCreatee" class="form-container">
           <h2>Ajouter catégorie</h2>
@@ -47,7 +27,7 @@
           </form>
         </div>
         
-        <table class="table table-striped custom-table">
+        <table class="table">
           <thead>
             <tr>
               <th scope="col">Image</th>
@@ -68,10 +48,10 @@
               <td>{{ category?.description }}</td>
               <td>
                 <div class="button-container">
-                <button type="button" class="btn btn-edit" (click)="editCategory(category)">
+                <button type="button" class="btn btn-edit" style="color: #fff;" (click)="editCategory(category)">
                   <i class="fas fa-edit"></i>
                 </button>
-                <button type="button" class="btn btn-delete"  (click)="deleteCategory(category.id.toString())">
+                <button type="button" class="btn btn-delete" style="color: #fff;" (click)="deleteCategory(category.id.toString())">
                   <i class="fas fa-trash"></i>
                 </button>
               </div>
@@ -80,7 +60,7 @@
           </tbody>
         </table>
         
-        <div *ngIf="editMode"class="form-container">
+        <div *ngIf="editMode"class="form-containerr">
           <h2>Modifier la catégorie</h2>
           <form [formGroup]="editForm" (ngSubmit)="onSubmit()" class="card p-3">
             <div class="form-group">

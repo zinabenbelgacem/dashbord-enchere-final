@@ -26,13 +26,8 @@ export class LoginComponent {
         if (data.type && data.type.includes('admin')) {
           // Redirect to admin dashboard
           this.router.navigate(['/admin']);
-        } 
-        // Check if the user is a vendeur (vendor)
-        else if (data.type && data.type.includes('vendeur')) {
-          // Redirect to vendeur dashboard
-          this.router.navigate(['/vendeur']);
-        }
-        else {
+      
+        } else {
           // Redirect to home page for regular users
           this.router.navigate(['/']);
         }
@@ -43,7 +38,6 @@ export class LoginComponent {
       }
     );
   }
-  
 
   goToRegister(): void {
     this.router.navigate(['/register']);

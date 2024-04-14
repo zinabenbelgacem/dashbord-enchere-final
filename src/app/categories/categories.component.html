@@ -1,22 +1,43 @@
-
+<app-navbar></app-navbar>
 <div *ngIf="loading" class="d-flex justify-content-center align-items-center bg-light border rounded p-3">
   <span class="spinner-border mr-2" role="status" aria-hidden="true"></span>
   <span class="h5 mb-0 text-muted">Chargement des catégories...</span>
 </div>
 
+<div class="card-container">
+  <div *ngFor="let category of categories" class="card">
+    <div class="card-body">
+      <ng-container *ngIf="isValidURL(category.image)">
+        <img [src]="category.image" alt="Category Image" style="max-width: 290px; max-height: 290px;">
+      </ng-container>
+      <ng-container *ngIf="!isValidURL(category.image)">
+        <span>Aucune image disponible pour le moment</span>
+      </ng-container>
+      <h5 class="card-title" style="text-align: center;">{{ category?.titre }}</h5>
+      <p class="card-text">{{ category?.description }}</p>
+      <p class="card-text"><button class="button"  (click)="showCategoryDetails(category)"><i class="fas fa-arrow-right"></i> Voir les articles</button></p>
+ 
+      <!-- Afficher les articles de la catégorie sélectionnée    <h3>Articles de la catégorie {{ selectedCategory?.titre }}</h3>          <p>titre:{{ article.titre }} Caracteristique: {{ article.description }} Prix: {{ article.prix }} Dt-->
+        <div *ngIf="category.id === selectedCategory?.id">
+          <ul class="image-list">
+            <li *ngFor="let article of categoryArticles" >
+              <ng-container *ngIf="isValidURL(article.photo)">
+                <div class="image-bubble">
+                  <img [src]="article.photo" alt="Article Image"> 
+                </div>
+                {{ article.titre }} 
+              </ng-container>
+              <ng-container *ngIf="!isValidURL(article.photo)">
+                <div class="image-bubble no-image">
+                  <span>Aucune image disponible pour le moment</span>
+                </div>
+              </ng-container> 
+                       
+            </li>
+          </ul>
+        </div>
+    </div>
+  </div>
+</div>
 
-        <h1>Les catégories</h1>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8"> <!-- Use a responsive grid for category cards -->
-          <ng-container *ngFor="let category of categories">
-              <a routerLink="" class="relative flex flex-col overflow-hidden rounded-lg p-6 hover:opacity-75 bg-white shadow-md">
-                  <span aria-hidden="true" class="block w-full">
-                      <img src="{{category.image || 'assets/category.png'}}" alt="{{category.titre}}" class="h-64 w-full object-cover object-center">
-                  </span>
-                  <div class="mt-auto text-center">
-                      <h2 class="text-xl font-bold mb-2">{{category.titre}}</h2>
-                      <p class="text-sm text-gray-700">{{category.description}}</p>
-                  </div>
-              </a>
-          </ng-container>
-      </div>
+<div style="margin-bottom: 170px;margin-left: 5px;margin-right: 5px;"></div>

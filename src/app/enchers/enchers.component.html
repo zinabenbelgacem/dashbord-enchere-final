@@ -1,31 +1,42 @@
-<div class="container table-container">
-    <button type="button" class="custom-button" (click)="participerEnchere()">
-        Participer à l'enchère
-      </button>
-    <table class="table table-striped table-bordered table-hover professional-table">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">Date de début</th>
-                <th scope="col">Date de fin</th>
-                <th scope="col">Articles</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let enchere of encheres">
-                <td>{{ enchere?.dateDebut ? formatDate(parseDate(enchere.dateDebut)) : '' }}</td>
-                <td>{{ enchere?.dateFin ? formatDate(parseDate(enchere.dateFin)) : '' }}</td>
+<div class="container">
+  <h2 class="page-title text-center">Les Enchères Planifiées</h2>
+  <div class="row">
+    <div class="col-md-4" *ngFor="let enchere of encheres">
+      <div class="card auction-card">
+        <div class="card-body">
+          <p class="card-text auction-date">Date de début : {{ enchere.dateDebut ? formatDate(parseDate(enchere.dateDebut)) : '' }}</p>
+          <p class="card-text auction-date">Date de fin : {{ enchere.dateFin ? formatDate(parseDate(enchere.dateFin)) : '' }}</p>
+          <div *ngIf="enchere.id !== undefined && getArticlesForEnchere(enchere.id)">
+            <ng-container *ngFor="let article of getArticlesForEnchere(enchere.id)">
+              <div style="display: inline-block; margin-right: 10px;">
+                <div>{{ article.titre }}</div>
+                <!-- Ajout d'un gestionnaire d'événements (click) pour afficher le formulaire après avoir cliqué sur l'image -->
+                <img [src]="article.photo" alt="Photo de l'article" width="100" height="100" style="border-radius: 20%;" (click)="toggleAddPriceForm(article.id)">
+                <div> Prix départ: {{ article.prix }} Dt</div>
+                <div> Prix Vente: {{ article.prixvente }} Dt</div>
+                <!-- Afficher le formulaire uniquement si cet article est sélectionné -->
+                <form [formGroup]="prixVenteForm" *ngIf="showAddPriceForm && selectedArticleId === article.id" >
+                  <!-- Vos autres champs de formulaire ici -->
+                  <div class="form-group">
+                    <label for="prixvente" class="prix-vente-label">Nouveau Prix de Vente  </label>
+                    <input type="number" class="form-control prix-vente-input" id="prixvente" formControlName="prixvente">
+                    <!-- Afficher le message d'erreur si le champ est invalide et a été touché -->
+                    <div *ngIf="prixVenteForm.get('prixvente')?.errors?.['required'] && prixVenteForm.get('prixvente')?.touched"class="prix-vente-error">Le champ est requis</div>
+                  </div>
+                  <button type="submit" style="background-color: rgb(21, 235, 131); margin-top: 3px;
+                  border: none;border-radius: 5px;  color: #fff; padding: 0.75rem 1rem;
+                  transition: all 0.2s ease-in-out;" (click)="addPrixVenteForArticle(enchere.id !== undefined ? enchere.id : 0, article.id)">Valider</button>
+                </form>                
                 
-                <td>
-                    <ng-container *ngIf="enchere.articles">
-                        <span *ngFor="let articleId of enchere.articles">
-                            {{ getArticleTitle(articleId.id) }}
-                        </span>
-                    </ng-container>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+              </div>
+            </ng-container>
+          </div>
+             
+          <!-- Bouton Participer -->
+          <button *ngIf="enchere.id !== undefined" (click)="findUserIdAndParticipateEnchere(enchere.id);" class="btn btn-primary" style="text-align:center;margin-top: 5px;">Participer</button>
+          <span *ngIf="enchere.id === undefined" class="badge badge-warning text-dark">ID d'enchère non défini</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-
-         
- 

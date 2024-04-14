@@ -1,9 +1,11 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ArticleService } from '../article.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 interface Article {
   id: number;
@@ -11,9 +13,18 @@ interface Article {
   description: string;
   photo: string;
   prix: string;
+  prixvente: string;
   livrable: boolean;
-  statut: string; 
+  statut: string;
   quantiter: number;
+  categorie: Categorie;
+}
+
+interface Categorie {
+  id: number;
+  titre: string;
+  description: string;
+  image: string;
 }
 
 @Component({
@@ -22,118 +33,60 @@ interface Article {
   styleUrls: ['./articles.component.css']
 })
 export class ArticlesAdminComponent implements OnInit {
-  displayedColumns = ['titre', 'description', 'photo', 'prix', 'livrable', 'status', 'quantiterr', 'actions'];
-  public editMode: boolean = false;
-  public articles: Article[] = [];
-  public editArticle: Article | null = null;
-  public loading: boolean = false;
-  public photoUrl: string = '';
-  public myForm!: FormGroup;
-  urlPattern = new RegExp('^(https?:\\/\\/)?'+ // Protocole
-  '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // Nom de domaine
-  '((\\d{1,3}\\.){3}\\d{1,3}))'+ // Ou une adresse IP (v4) 
-  '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // Port et chemin
-  '(\\?[;&a-z\\d%_.~+=-]*)?'+ // Paramètres de requête
-  '(\\#[-a-z\\d_]*)?$','i'); // Fragment
-  editForm!: FormGroup; 
+  displayedColumns = ['titre', 'description', 'photo', 'prix', 'livrable', 'status', 'quantiterr', 'categorie', 'actions'];
+  editMode: boolean = false;
+  articles: Article[] = [];
+  editArticle: Article | null = null;
+  loading: boolean = false;
+  photoUrl: string = '';
+  myForm!: FormGroup;
+  categories: Categorie[] = [];
+  urlPattern = new RegExp('^(https?:\\/\\/)?' + // Protocole
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // Nom de domaine
+    '((\\d{1,3}\\.){3}\\d{1,3}))' + // Ou une adresse IP (v4) 
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // Port et chemin
+    '(\\?[;&a-z\\d%_.~+=-]*)?' + // Paramètres de requête
+    '(\\#[-a-z\\d_]*)?$', 'i'); // Fragment
+  editForm!: FormGroup;
   onCreatee = false;
   newArticle: Article = {
     id: 0,
     titre: '',
     description: '',
     photo: '',
-    prix:'',
-    livrable:false,
-    statut:'',
-    quantiter:0
+    prix: '',
+    prixvente: '',
+    livrable: false,
+    statut: '',
+    quantiter: 0,
+    categorie: { id: 0, titre: 'Default Category', description: '', image: '' }
   };
-  constructor(
+  
+  constructor(private http: HttpClient,
     private formBuilder: FormBuilder,
     private articleService: ArticleService,
     private snackBar: MatSnackBar,
     private router: Router,
-  ) 
-  {
-    this.myForm = this.formBuilder.group({
-      titre: ['', Validators.required],
-      description: ['', Validators.required],
-      photo: ['', Validators.required],
-      prix: ['', Validators.required],
-      livrable: [false,Validators.required],
-      statut: ['',Validators.required],
-      quantiter: [0,Validators.required],
-    });
-    {
-    this.editForm = this.formBuilder.group({
-      titre: ['', Validators.required],
-      description: ['', Validators.required],
-      photo: ['', Validators.required],
-      prix: ['', Validators.required],
-      livrable: [false,Validators.required],
-      statut: ['',Validators.required],
-      quantiter: [0,Validators.required],
-    });
-  }
-  }
-  public links: any = [
-    {
-      title: 'Dashboard',
-      items: [
-        {
-          name: 'overview',
-          icon: 'fa-solid fa-house',
-        }, {
-          name: 'billboards',
-          icon: 'fa-brands fa-bandcamp',
-        }
-      ],
-    },
+  ) { }
 
-    {
-      title: 'Pages',
-      items: [
-        {
-          name: 'users',
-          icon: 'fa-solid fa-users',
-        }, {
-          name: 'enchers',
-          icon: 'fa-solid fa-bag-shopping',
-        },
-        {
-          name: 'categorie',
-          icon: 'fa-solid fa-dumpster-fire',
-        },
-        {
-          name: 'article',
-          icon: 'fa-solid fa-dumpster-fire',
-        },
-        {
-          name: 'demande-vendeur',
-          icon: 'fa-solid fa-users',
-        },
-        {
-          name: 'commentaire',
-          icon: 'fa-solid fa-comment',
-        },
-       {
-          name: 'tags',
-          icon: 'fa-solid fa-tag'
-        }
-      ],
-    },
-
-  ];
-
-// [routerLink]="['/', item.name]
-  public currentPath: string | undefined;
-
-  public navigateTo(item: string) {
-
-    this.router.navigate(['/', item]);
-
-  }
   ngOnInit() {
+    this.getAllCategories();
     this.getAllArticles();
+    this.initializeForms();
+  }
+
+  getAllCategories() {
+    this.articleService.getAllCategories().subscribe(
+      (categories: Categorie[]) => {
+        this.categories = categories;
+      },
+      (error: HttpErrorResponse) => {
+        console.error('Erreur lors du chargement des catégories:', error);
+        this.snackBar.open('Erreur lors du chargement des catégories!', 'Fermer', {
+          duration: 3000
+        });
+      }
+    );
   }
 
   getAllArticles() {
@@ -148,7 +101,32 @@ export class ArticlesAdminComponent implements OnInit {
         });
       }
     );
-    
+  }
+
+  initializeForms() {
+    this.myForm = this.formBuilder.group({
+      titre: ['', Validators.required],
+      description: ['', Validators.required],
+      photo: ['', Validators.required],
+      prix: ['', Validators.required],
+      prixvente: [''],
+      livrable: [false, Validators.required],
+      statut: ['', Validators.required],
+      quantiter: [0, Validators.required],
+      categorie: [null, Validators.required], 
+    });
+
+    this.editForm = this.formBuilder.group({
+      titre: ['', Validators.required],
+      description: ['', Validators.required],
+      photo: ['', Validators.required],
+      prix: ['', Validators.required],
+      prixvente: [''],
+      livrable: [false, Validators.required],
+      statut: ['', Validators.required],
+      quantiter: [0, Validators.required],
+      categorie: [null, Validators.required], 
+    });
   }
 
   editArticleFunc(article: Article) {
@@ -159,17 +137,20 @@ export class ArticlesAdminComponent implements OnInit {
       description: article.description,
       photo: article.photo,
       prix: article.prix,
+      prixvente: article.prixvente,
       livrable: article.livrable,
-      status: article.statut,
-      quantiter: article.quantiter
+      statut: article.statut,
+      quantiter: article.quantiter,
+      categorie: article.categorie ? article.categorie.id : null,
     });
     this.photoUrl = article.photo;
   }
+
   cancelEdit() {
-    this.editMode = false; // Quitte le mode édition
-    this.editArticle = null; // Réinitialise l'article en cours d'édition
-    this.editForm.reset(); // Réinitialise le formulaire d'édition
-    this.photoUrl = ''; // Réinitialise l'URL de la photo
+    this.editMode = false;
+    this.editArticle = null;
+    this.editForm.reset();
+    this.photoUrl = '';
   }
   
   deleteArticle(id: string) {
@@ -188,14 +169,14 @@ export class ArticlesAdminComponent implements OnInit {
         window.location.reload();
         this.snackBar.open('Erreur lors de la suppression de l\'article: ' + error.error, 'Fermer', {
           duration: 3000,
-        } );
+        });
       }
     );
   }
 
   cancelCreation() {
     this.onCreatee = false;
-    this.myForm.reset(); // Réinitialise le formulaire
+    this.myForm.reset();
     this.photoUrl = '';
   }
 
@@ -206,7 +187,6 @@ export class ArticlesAdminComponent implements OnInit {
       this.createArticle();
     }
   }
-
   updateArticle(updatedArticle: Article) {
     if (this.editForm && this.editForm.valid && this.editArticle) {
       const updatedArticleData: Article = {
@@ -215,11 +195,17 @@ export class ArticlesAdminComponent implements OnInit {
         description: this.editForm.value.description,
         photo: this.editForm.value.photo,
         prix: this.editForm.value.prix,
+        prixvente:this.editForm.value.prixvente,
         livrable: this.editForm.value.livrable,
         statut: this.editForm.value.statut,
-        quantiter: this.editForm.value.quantiter
+        quantiter: this.editForm.value.quantiter,
+        categorie: {
+          id: this.editForm.value.categorie,
+          titre: '', 
+          description: '',
+          image: ''
+        },
       };
-  
       this.articleService.updateArticle(updatedArticleData.id.toString(), updatedArticleData).subscribe(
         Response => {
           this.editMode = false;
@@ -245,20 +231,25 @@ export class ArticlesAdminComponent implements OnInit {
     this.onCreatee = true;
     if (this.myForm.valid) {
       const newArticle: Article = {
+        id: 0, // Assurez-vous que cela correspond à la logique d'attribution d'identifiants dans votre application
         titre: this.myForm.value.titre,
         description: this.myForm.value.description,
         photo: this.myForm.value.photo,
         prix: this.myForm.value.prix,
+        prixvente: this.myForm.value.prixvente,
         livrable: this.myForm.value.livrable,
         statut: this.myForm.value.statut,
         quantiter: this.myForm.value.quantiter,
-        id: 0 
+        categorie: {
+          id: this.myForm.value.categorie,
+          titre: '', // Provide empty values for now, they will be overwritten if needed
+          description: '',
+          image: ''
+        },
       };
-      console.log('Envoi des données au backend.');
-
       this.articleService.addArticle(newArticle).subscribe(
         response => {
-          this.onCreatee = false;       
+          this.onCreatee = false;
           this.myForm.reset(); // Clear form data
           this.photoUrl = ''; // Clear image preview
           this.getAllArticles();
@@ -281,7 +272,6 @@ export class ArticlesAdminComponent implements OnInit {
     if (!url) {
         return false;
     }
-
     // Expression régulière pour valider les URL
     const urlPattern = new RegExp('^https?://.*', 'i');
     // Test si l'URL correspond au modèle d'URL

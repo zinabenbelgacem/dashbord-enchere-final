@@ -1,9 +1,14 @@
-.container {
-    width: 500%;
-    height: 500%;
-     padding: 20px;
-     background-color: #f5f5f5;
-     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.containerr {
+    width: 80%;
+    height: 95%;
+    margin-left: 19%;
+    margin-top: -75rem; 
+    background-color: #f5f5f5;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+ }
+ .article_Image{
+    width: 50px;
+    height: 70px;
  }
  .custom-table {
      border-collapse: separate;
@@ -22,10 +27,11 @@
      font-style: italic;
      border-radius: 10px;
      margin-right: 20px;
+     margin-bottom: 10px;
  }
  
  .user-form {
-     width: 100%;
+    width: 100%;
  }
  
  .alert-success {
@@ -93,7 +99,7 @@
  }
  .alert-container {
      position: fixed;
-     top: 50%;
+     top: 65%;
      left: 50%;
      transform: translate(-50%, -50%);
      background-color: #ffffff;
@@ -133,7 +139,7 @@
  
  /* Styles for the sidebar container */
  .sidebar {
-    width: 280px;
+  width: 280px;
   background-color: #0a2250;
   height: 1200px;
   padding: 20px;

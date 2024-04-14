@@ -35,7 +35,7 @@ export class UtulisateursComponent implements OnInit {
   constructor(private userService: UserServiceService,private router:Router,private route: ActivatedRoute) { } 
   ngOnInit(): void {
     // Initialisez le FormGroup et les FormControl correspondants
-     this.userForm = new FormGroup({
+    this.userForm = new FormGroup({
       id: new FormControl(),
       nom: new FormControl(),
       prenom: new FormControl(),
@@ -134,6 +134,7 @@ public links: any = [
       }
     ],
   },
+
 ];
 
 

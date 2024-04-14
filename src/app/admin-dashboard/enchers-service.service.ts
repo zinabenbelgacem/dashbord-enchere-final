@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
-import { User } from '../_service/user'; // Assurez-vous d'importer correctement le modèle User
+import { User } from '../_service/user';
 interface Enchere {
   id?: number;
   dateDebut: string;
   dateFin: string;
-  parten: { id: number };
-  admin: { id: number };
+  parten: { id: number }; // Ajoutez la propriété 'nom' à l'objet 'parten'
+  admin: { id: number};
   articles: { id: number }[];
 }
 interface Article {
-  id: number; // Assurez-vous que le type correspond à votre base de données
+  id: number;
   titre: string;
   description: string;
   photo: string;
@@ -19,6 +19,9 @@ interface Article {
   livrable:boolean;
   statut:string;
   quantiter:number;
+}
+interface Part_En{
+  id: number;
 }
 @Injectable({
   providedIn: 'root'
@@ -29,6 +32,14 @@ export class EnchereService {
 
   getAllArticles(): Observable<any[]> {
     return this.http.get<any[]>(`http://localhost:3002/article/getAll`);
+  }
+  getAdminById(adminId: number): Observable<any> {
+    return this.http.get<any>(`http://localhost:3003/admins/${adminId}`);
+  }
+
+  // Méthode pour récupérer les détails du partenaire par son ID
+  getPartEnById(partEnId: number): Observable<any> {
+    return this.http.get<any>(`http://localhost:3002/parten/${partEnId}`);
   }
   getArticleById(id: number): Observable<Article> {
     return this.http.get<Article>(`http://localhost:3002/article/${id}`);
@@ -41,7 +52,9 @@ export class EnchereService {
     return this.http.get<any[]>(`http://localhost:3003/admins`);
   }
 
-
+  participateInEnchere(userId: number, enchereId: number): Observable<any> {
+    return this.http.post<any>(`http://localhost:3002/enchere/${userId}/participate/${enchereId}`, {});
+  }
   addEnchere(enchere: Enchere): Observable<Enchere> {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -53,14 +66,35 @@ export class EnchereService {
       catchError(this.handleError)
     );
   }
+
+  addPart_En(partEn: Part_En): Observable<Part_En> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post<Part_En>(`http://localhost:3002/parten/add`, partEn);
+  }
   private handleError(error: any) {
     console.error('An error occurred:', error);
     return throwError('Something bad happened; please try again later.');
   }
-  updateEnchere(iden: number, enchere: Enchere): Observable<Enchere> {
-    return this.http.post<Enchere>(`http://localhost:3002/enchere/UpdateEnchere/${iden}`, enchere);
+ 
+  updateIdEnchers(articleId: number, enchereId: number): Observable<any> {
+    return this.http.put(`http://localhost:3002/article/updateIdEnchers/${articleId}/${enchereId}`, null).pipe(
+        catchError(this.handleError)
+    );
+}
+updateIdEncherss(articleId: number, enchereId: number): Observable<any> {
+  return this.http.put(`http://localhost:3002/article/${articleId}/enchere/${enchereId}`, null).pipe(
+      catchError(this.handleError)
+  );
+}
+  updateEnchere(id: number, updatedEnchere: Enchere): Observable<Enchere> {
+    const url = `http://localhost:3002/enchere/UpdateEnchere/${id}`;
+    return this.http.post<Enchere>(url, updatedEnchere);
   }
-
+  
   deleteEnchere(iden: number): Observable<string> {
     return this.http.delete<string>(`http://localhost:3002/enchere/deleteEnchere/${iden}`).pipe(
       catchError(this.handleError)

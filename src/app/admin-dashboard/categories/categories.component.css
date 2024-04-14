@@ -6,12 +6,14 @@
     background-color: #ffffff; 
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
 /* Table Styles */
 .table {
-   margin-left: 5%;
-    height: 100%;
     margin-top: 10%;
-    width: 300%;
+    margin-left: 20%;
+    margin-top: -67rem; 
+    height: 10%;
+    width: 79%;
     border-collapse: collapse;
   }
   
@@ -51,9 +53,10 @@
       }
       
 .btn-add {
-    top:120px;
-    margin-right: 20px;
-    margin-top: 20px;
+    top:160px;
+    margin-right: 60px;
+    margin-top: 65px;
+    margin-bottom: 15px;
   }  
 
 .alert-success {
@@ -69,14 +72,10 @@
 }
 
 .btn {
-    min-width: 20px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 10px;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-}
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 0.25rem;
+  }
 
 
 .btn i {
@@ -85,7 +84,7 @@
 .btn-add {
     position: absolute;/* Position fixe pour maintenir le bouton en haut */
     top: 95px; /* Distance du haut de la page */
-    right: 65%;/* Distance de la droite de la page */
+    right: 66%;/* Distance de la droite de la page */
     z-index: 1000; /* Pour s'assurer que le bouton est au-dessus des autres éléments */
     background-color: rgb(92, 90, 221);/* Couleur de fond */
     color: #fff; /* Couleur du texte */
@@ -492,18 +491,29 @@ label {
 }
 .form-container {
     position: absolute;
-    top: 57%;
-    left: 50%;
+    top: 65%;
+    left: 60%;
     transform: translate(-50%, -50%);
-    width: 50%;
-    padding: 20px;
+    width: 79%;
+    padding: 30px;
     border-radius: 8px;
-   background-color: white;
+    background-color: white;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   } 
   .form-container input[type="text"]:focus {
     border-color: #66afe9;
     outline: none;
+  }
+  .form-containerr{
+    position: absolute;
+    top: 63%;
+    left: 59%;
+   padding-bottom: 10px;
+    transform: translate(-50%, -50%);
+    width: 79%;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
    
   .loading {
