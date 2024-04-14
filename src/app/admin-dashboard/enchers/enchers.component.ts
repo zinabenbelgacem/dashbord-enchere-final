@@ -3,9 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ArticleService } from '../article.service';
-import {  EMPTY, Observable, Subject,catchError,forkJoin, mergeMap } from 'rxjs';
+
 import { EnchereService } from '../enchers-service.service';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 interface Enchere {
   id?: number;
@@ -28,6 +29,9 @@ interface Article {
   statut:string;
   quantiter?: number;
   idEnchere?: number;
+}
+interface Part_En{
+  id: number;
 }
 interface Part_En{
   id: number;
@@ -93,6 +97,7 @@ enchereEnCours: any;
     this.getAllAdmins();
     this.getAllArticles();
   }
+
   participer() {
     const partEn: Part_En = {
       id: 1 
@@ -113,6 +118,7 @@ enchereEnCours: any;
       }
     );
   }
+
 
   addPartEn(partEn: Part_En): Observable<Part_En> {
     return this.encherService.addPart_En(partEn);
@@ -186,6 +192,8 @@ addSelectedArticle(articleId: number) {
           } else {
             console.log("Aucun administrateur associé à cette enchère.");
           }
+
+
 
         });
         this.loading = false;
@@ -286,6 +294,9 @@ participerEnchere(userId: number, enchereId: number) {
           admin: { id: selectedAdmin.id },
           articles: this.myForm.value.articles.map((article: any) => ({ id: article.id }))
         };
+
+        /*this.addPartEn({ id: 1 }).subscribe(() => {
+        });*/
         this.encherService.addEnchere(newEnchere).subscribe(
           (response: any) => {
             this.myForm.reset();
@@ -314,40 +325,33 @@ participerEnchere(userId: number, enchereId: number) {
     this.myForm.reset();
     this.showAddForm=false;
   }
-onSubmit() {
-  if (this.editMode && this.editForm.valid) {
-    const updatedEnchere: Enchere = {
-        id: this.editForm.value.id,
-        dateFin: this.editForm.value.dateFin,
-        dateDebut: this.editForm.value.dateDebut,
-        parten: { id: this.editForm.value.parten },
-        admin: { id: this.editForm.value.admin },
-        // Utilisez l'ID de l'article sélectionné à partir de la liste des articles dans le formulaire
-        articles: [{ id: this.editForm.value.articles }]
-    };
-
-    if (updatedEnchere.id !== undefined) {
-        if (updatedEnchere.articles && updatedEnchere.articles.length > 0 && updatedEnchere.articles[0].id !== undefined) {
-            this.encherService.updateEnchere(updatedEnchere.id, updatedEnchere).subscribe(
-                (response: any) => {
-                    // Utilisez l'ID de l'article sélectionné pour mettre à jour l'enchère
-                    this.encherService.updateIdEncherss(updatedEnchere.articles[0].id, response.id).subscribe(
-                        () => {
-                            this.editForm.reset();
-                            this.editMode = false;
-                            this.snackBar.open('Enchère mise à jour avec succès!', 'Fermer', { duration: 3000 });
-                        },
-                        (error: HttpErrorResponse) => {
-                            console.error('Erreur lors de la mise à jour des articles :', error);
-                            this.snackBar.open('Erreur lors de la mise à jour des articles', 'Fermer', { duration: 3000 });
-                        }
-                    );
-                },
-                (error: HttpErrorResponse) => {
-                    console.error('Erreur lors de la mise à jour de l\'enchère :', error);
-                    this.snackBar.open('Erreur lors de la mise à jour de l\'enchère', 'Fermer', { duration: 3000 });
-                }
-            );
+  onSubmit() {
+    if (this.editMode) {
+      if (this.editForm.valid) {
+        const updatedEnchere: Enchere = {
+          id: this.editForm.value.id,
+          dateFin: this.editForm.value.dateFin,
+          dateDebut: this.editForm.value.dateDebut,
+          parten: { id: this.editForm.value.parten },
+          admin: { id: this.editForm.value.admin },
+          articles: this.editForm.value.articles.map((article: any) => ({ id: article }))
+        };
+        if (updatedEnchere.id !== undefined) {
+          this.encherService.updateEnchere(updatedEnchere.id, updatedEnchere).subscribe(
+            () => {
+              const index = this.encheres.findIndex(enchere => enchere.id === updatedEnchere.id);
+              if (index !== -1) {
+                this.encheres[index] = updatedEnchere;
+              }
+              this.editForm.reset();
+              this.editMode = false;
+              this.snackBar.open('Enchère mise à jour avec succès!', 'Fermer', { duration: 3000 });
+          },
+            (error: HttpErrorResponse) => {
+              console.error('Erreur lors de la mise à jour de l\'enchère :', error);
+              this.snackBar.open('Erreur lors de la mise à jour de l\'enchère', 'Fermer', { duration: 3000 });
+            }
+          );
         } else {
             console.error('L\'ID de l\'article n\'est pas défini.');
         }
