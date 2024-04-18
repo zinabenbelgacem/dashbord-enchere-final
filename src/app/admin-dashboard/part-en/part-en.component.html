@@ -9,6 +9,7 @@
                 <th> Numèro PartEn </th>
                 <th>Enchères</th>
                 <th>Utilisateurs</th>
+                
             </tr>
         </thead>
         <tbody>
@@ -21,6 +22,7 @@
                             <strong>Date de début:</strong> {{ enchere.dateDebut | date:'dd/MM/yyyy HH:mm:ss' }} <br>
                             <strong>Date de fin:</strong> {{ enchere.dateFin | date:'dd/MM/yyyy HH:mm:ss' }} <br>
                             <!-- Afficher les articles associés à cette enchère -->
+                    
                             <strong>Articles:</strong>
                             <ul>
                                 <div *ngIf="enchere.id !== undefined && getArticlesForEnchere(enchere.id)">
@@ -39,6 +41,7 @@
                                     </ng-container>
                                 </div>
                             </ul>
+                       
                         </li>
                     </ul>
                 </td>

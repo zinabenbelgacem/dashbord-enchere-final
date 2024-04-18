@@ -17,11 +17,10 @@ interface Articlee {
   description: string;
   photo: string;
   prix: string;
- // livrable: boolean;
   statut: string; 
- // quantiter: number;
-
 }
+
+
 @Component({
   selector: 'app-part-en',
   templateUrl: './part-en.component.html',

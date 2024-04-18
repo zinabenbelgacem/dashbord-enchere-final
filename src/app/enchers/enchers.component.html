@@ -1,4 +1,25 @@
 <div class="container">
+  <style>
+    .alert-warning {
+      background-color: #fff3cd; /* Yellow background */
+      border-color: #ffeeba; /* Yellow border */
+      color: #856404; /* Dark yellow text */
+      border-radius: 10px; /* Rounded corners */
+      padding: 15px 20px; /* Padding */
+      margin-bottom: 20px; /* Bottom margin */
+      width: 36%;
+    }
+  
+    .alert-warning strong {
+      color: #c83e4d; /* Red for the "Attention" text */
+    }
+  </style>
+  
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <i class="fas fa-exclamation-triangle" style="color: rgb(239, 38, 11); margin-right: 5px; "></i> Cliquez sur l'image pour entrer le prix de vente
+
+  </div>
+  
   <h2 class="page-title text-center">Les Enchères Planifiées</h2>
   <div class="row">
     <div class="col-md-4" *ngFor="let enchere of encheres">

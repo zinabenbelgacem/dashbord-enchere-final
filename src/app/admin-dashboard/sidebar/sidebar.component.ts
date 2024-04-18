@@ -24,7 +24,7 @@ export class SidebarComponent {
       items: [
         {
           name: 'users',
-          icon: 'fa-solid fa-users',
+          icon: 'fa-solid fa-users-cog' 
         }, {
           name: 'enchers',
           icon: 'fa-solid fa-bag-shopping',
@@ -39,7 +39,7 @@ export class SidebarComponent {
         },
         {
           name: 'demande-vendeur',
-          icon: 'fa-solid fa-money-bill-wave',
+          icon: 'fa-solid fa-file-alt' 
         },
         {
           name: 'paiment',
@@ -53,7 +53,7 @@ export class SidebarComponent {
           name: 'commentaire',
           icon: 'fa-solid fa-comment',
         },
-       {
+       /*{
           name: 'tags',
           icon: 'fa-solid fa-tag'
         },
@@ -89,12 +89,12 @@ export class SidebarComponent {
           name: 'tags',
           icon: 'fa-solid fa-cogs' 
         }
-        ,
+        ,*/
         {
           name: 'livraison',
           icon: 'fa-solid fa-truck' 
         }
-        ,
+        /*,
         {
           name: 'livraison',
           icon: 'fa-solid fa-shopping-cart' 
@@ -116,7 +116,7 @@ export class SidebarComponent {
        // icon: 'fa-solid fa-bullhorn' 
       // icon: 'fa-solid fa-comments-dollar'
       icon: 'fa-solid fa-user-tie'
-        }
+        }*/
       
       ],
     },

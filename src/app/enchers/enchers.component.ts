@@ -155,7 +155,7 @@ public getArticlesForEnchere(enchereId: number): Article[] | undefined {
     this.encherService.getArticlesForEnchere(enchereId).subscribe(
       (articles: Article[]) => {
         this.articlesForEnchereMap[enchereId] = articles;
-        console.log("Articles pour l'enchère avec ID", enchereId, ":", this.articlesForEnchereMap[enchereId]);
+       // console.log("Articles pour l'enchère avec ID", enchereId, ":", this.articlesForEnchereMap[enchereId]);
       },
       (error) => {
         console.error('Une erreur s\'est produite lors de la récupération des articles de l\'enchère avec ID', enchereId, ':', error);
@@ -172,8 +172,6 @@ getArticlePhoto(articleId: number): string {
 }
 
 findUserIdAndParticipateEnchere(enchereId: number) {
- // this.selectedEnchereId = enchereId;
-  //this.selectedArticleId = articleId;
   const storedToken = localStorage.getItem('token');
   if (storedToken) {
     console.log("storedTokennnn",storedToken);
@@ -479,68 +477,6 @@ toggleAddPriceForm(articleId: number | undefined) {
   getParticipantId(enchereId: number): Observable<number> {
     return this.partenservice.getPartenIdByEnchere(enchereId);
   }
-/*  addPrixVenteForArticle(enchereId: number, articleId: number) {
-    if (this.prixVenteForm.valid) {
-      // Obtenez le contrôle de prix de vente du formulaire
-      const prixVenteControl = this.prixVenteForm.get('prixvente');
-      if (prixVenteControl) {
-        // Obtenez la valeur du prix de vente du contrôle
-        const prixVente = parseFloat(prixVenteControl.value);
-        console.log("Prix de vente:", prixVente); 
-  
-        // Appelez la méthode pour obtenir l'ID du participant
-        this.getParticipantId(enchereId).subscribe(
-          (participantId: number) => {
-            console.log('ID du participant:', participantId);
-            
-            // Appelez le service pour ajouter le prix de vente pour l'article
-            this.articleService.addPrixVenteForArticle(enchereId, articleId, prixVente).subscribe(
-              (response) => {
-                if (response instanceof HttpErrorResponse) {
-                  // Gestion des erreurs HTTP
-                  console.error("Erreur lors de l'ajout du prix de vente :", response);
-                  this.snackBar.open("Erreur lors de l'ajout du prix de vente.", 'Fermer', {
-                    duration: 3000
-                  });
-                } else {
-                  // La réponse est réussie (200 OK)
-                  // Réinitialisez le formulaire
-                  this.prixVenteForm.reset();
-                  // Masquez le formulaire de prix de vente
-                  this.showAddPriceForm = false;
-                  console.log("Le prix de vente a été ajouté avec succès.");
-                  // Affichez un message de succès à l'utilisateur si nécessaire
-                  this.snackBar.open('Le prix de vente a été ajouté avec succès.', 'Fermer', {
-                    duration: 3000
-                  });
-                }
-              },
-              (error) => {
-                console.error("Erreur lors de l'ajout du prix de vente :", error);
-                // Affichez un message d'erreur à l'utilisateur
-                this.snackBar.open("Erreur lors de l'ajout du prix de vente.", 'Fermer', {
-                  duration: 3000
-                });
-              }
-            );
-          },
-          (error) => {
-            console.error("Erreur lors de la récupération de l'ID du participant :", error);
-            // Affichez un message d'erreur à l'utilisateur si nécessaire
-            this.snackBar.open("Erreur lors de la récupération de l'ID du participant.", 'Fermer', {
-              duration: 3000
-            });
-          }
-        );
-      }
-    } else {
-      console.log("Le formulaire de prix de vente n'est pas valide.");
-      // Affichez un message d'avertissement à l'utilisateur si nécessaire
-      this.snackBar.open("Le formulaire de prix de vente n'est pas valide.", 'Fermer', {
-        duration: 3000
-      });
-    }
-  }*/
   addPrixVenteForArticle(enchereId: number, articleId: number) {
     if (this.prixVenteForm.valid) {
       // Obtenez le contrôle de prix de vente du formulaire
@@ -572,7 +508,7 @@ toggleAddPriceForm(articleId: number | undefined) {
                   });*/
                 },
                 (error) => {
-                  console.error("Le prix de vente a été ajouté avec succès.", error);
+                 // console.error("Le prix de vente a été ajouté avec succès.", error);
                   // Affichez un message d'erreur à l'utilisateur si nécessaire
                   this.snackBar.open('Le prix de vente a été ajouté avec succès.', 'Fermer', {
                     duration: 3000

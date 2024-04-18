@@ -55,27 +55,34 @@ export class ArticleService {
   getArticleById(id: number): Observable<Article> {
     return this.http.get<Article>(`${this.baseUrl}/${id}`);
   }
+addArticle(data: Article): Observable<Article> {
+    return this.http.post<Article>(`${this.baseUrl}/addArticle`, data); 
+}
 
-  addArticle(data: Article): Observable<Article> {
-    return this.http.post<Article>(`${this.baseUrl}/addArticle`, data); }
-
-    addArticleWithVendeurId(data: Article, vendeurId: number): Observable<Article> {
+addArticleWithVendeurId(data: Article, vendeurId: number): Observable<Article> {
       return this.http.post<Article>(`${this.baseUrl}/addArticlee/${vendeurId}`, data);
-    }
-  updateArticle(id: string, data: Article): Observable<Article> {
-    return this.http.put<Article>(`${this.baseUrl}/UpdateArticle/${id}`, data);
-  }
+}
+  
+updateArticle(id: string, data: Article): Observable<Article> {
+  return this.http.put<Article>(`${this.baseUrl}/UpdateArticle/${id}`, data);
+}
 
-  updateArticleStatut(id: number, statut: string): Observable<any> {
+updateArticleStatut(id: number, statut: string): Observable<any> {
     return this.http.put<any>(`${this.baseUrl}/updateStatut/${id}`, { statut });
   }
 
   deleteArticle(id: string): Observable<any> {
     return this.http.delete<any>(`${this.baseUrl}/deleteArticle/${id}`);
   }
-
+  updateArticleForVendeur(vendeurId: number, articleId: number, newArticle: Article): Observable<Article> {
+    const url = `${this.baseUrl}/articles/${vendeurId}/${articleId}`;
+    return this.http.put<Article>(url, newArticle);
+  }
   getAvailableArticles(): Observable<Article[]> {
     return this.http.get<Article[]>(`${this.baseUrl}/available`);
+  }
+  getUserIdByName(userName: string): Observable<number> {
+    return this.http.get<number>(`http://localhost:3003/api/${userName}`);
   }
 
   addArticleToCart(article: Article, quantitecde: number): Observable<any> {
