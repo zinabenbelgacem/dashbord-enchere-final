@@ -3,11 +3,12 @@ import { PartEnService, Part_En } from '../../part-en.service';
 import { EnchersServiceService } from 'src/app/enchers-service.service';
 import { Article } from 'src/app/shopping-cart/cards/panier.service';
 import { FormGroup } from '@angular/forms';
+
 interface Enchere {
   id?: number;
   dateDebut: string;
   dateFin: string;
-  parten: { id: number };
+  parten: { id: number }[];
   admin: { id: number };
   articles: { id: number }[];
 }
@@ -20,14 +21,13 @@ interface Articlee {
   statut: string; 
 }
 
-
 @Component({
   selector: 'app-part-en',
   templateUrl: './part-en.component.html',
   styleUrls: ['./part-en.component.css']
 })
 export class PartEnComponent implements OnInit {
-  public encheres: Enchere[] = []; // Utiliser le bon type Enchere[]
+  public encheres: Enchere[] = [];  // Utiliser le bon type Enchere[]
   public articles: Articlee[] = [];
   public formattedDateDebut!: string;
   public myForm!: FormGroup;
@@ -35,7 +35,6 @@ export class PartEnComponent implements OnInit {
   partEns: Part_En[] = [];
   public articlesForEnchereMap: { [enchereId: number]: Articlee[] } = {};
   constructor(private partEnService: PartEnService, private encherService: EnchersServiceService) {
-  
    }
   
   ngOnInit(): void {

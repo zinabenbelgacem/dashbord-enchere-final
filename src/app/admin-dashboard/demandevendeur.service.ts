@@ -33,12 +33,9 @@ updateUserType(userId: number): Observable<any> {
       'Content-Type': 'application/json'
     })
   };
-  return this.http.put(`http://localhost:3003/users/updateType/${userId}`, null);
+  return this.http.put(`http://localhost:3003/users/updateType/${userId}`, null,httpOptions);
 }
-  private handleError(error: any) {
-    console.error('An error occurred:', error);
-    return throwError('Something bad happened; please try again later.');
-  }
+
  // Méthode pour récupérer toutes les demandes de vendeurs
  getAllDemandeVendeurs(): Observable<demande_Vendeur[]> {
   return this.http.get<demande_Vendeur[]>('http://localhost:3002/demandesvendeurs/all')

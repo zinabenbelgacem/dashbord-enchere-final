@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, catchError, map, of } from 'rxjs';
+import { Vendeur } from '../vendeur-dashboard/vendeur';
+import { User } from '../_service/user';
 interface Article {
   id: number; 
   titre: string;
@@ -12,6 +14,7 @@ interface Article {
   statut:string;
   quantiter:number;
   categorie: Categorie;
+  enchers_id:string
 }
 interface Categorie {
   id: number; 
@@ -28,6 +31,9 @@ export class ArticleService {
   constructor(private http: HttpClient) { }
   getAllCategories(): Observable<Categorie[]> {
     return this.http.get<Categorie[]>(`http://localhost:3002/categorie/getallcategories`);
+  }
+  getVendeurByArticleId(articleId: number): Observable<number> {
+    return this.http.get<number>(`http://localhost:3002/article/${articleId}/vendeur`);
   }
   getAllArticles(): Observable<Article[]> {
     return this.http.get<Article[]>(`${this.baseUrl}/getAll`);

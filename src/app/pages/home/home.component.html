@@ -2,30 +2,19 @@
   <!-- Grande image -->
   <div class="navbar-images">
     <button (click)="previousImage()" class="nav-arrow">&#8249;</button>
-    <img [src]="categories[currentImageIndex].image" class="category-image" alt="Image de catégorie">
-    <h3 class="category-title">{{ categories[currentImageIndex].titre }}</h3>
+    <img [src]="categories[currentImageIndex]?.image" class="category-image" alt="Image de catégorie">
+    <h3 class="category-title">{{ categories[currentImageIndex]?.titre }}</h3>
     <button (click)="nextImage()" class="nav-arrow">&#8250;</button>
 </div>
-
-  <!-- Carousel <app-carousel class="absolute inset-0"></app-carousel>-->
 </div>
 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"> 
- <!--<section *ngIf="relatedArticles.length > 0" class="px-4 bg-gray-100">
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      <span class="p-6 rounded-lg" *ngFor="let article of relatedArticles">
-        <img class="w-full h-48 object-cover object-center mb-4 rounded-full" [src]="article.photo" alt="Article">
-        <p class="article-title" style="text-align: center;">{{ article.titre }}</p>
-      </span>
-    </div>
-  </section>--> 
-  <!-- category -->
   <section aria-labelledby="category-heading" class="pt-24 sm:pt-32 xl:mx-auto xl:max-w-7xl xl:px-8" style="margin-bottom: 1%;">
     <div class="px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8 xl:px-0">
       <h2 id="category-heading" class="text-2xl font-bold tracking-tight text-gray-900" style="margin-top: 1%;">Shop by Category</h2>
-      <a routerLink="/categories" class="hidden text-sm font-semibold text-indigo-600 hover:text-indigo-500 sm:block">
+     <!--<a routerLink="/categories" *ngIf="!authService.isLoggedIn()" class="hidden text-sm font-semibold text-indigo-600 hover:text-indigo-500 sm:block">
         Browse all categories
         <span aria-hidden="true"> &rarr;</span>
-      </a>
+      </a>-->
     </div>
   
     <div class="mt-9 flow-root category-container">
@@ -45,19 +34,19 @@
    
   
   
-    <div class="mt-6 px-4 sm:hidden">
-      <a routerLink="/articles" class="block text-sm font-semibold text-indigo-600 hover:text-indigo-500">
+    <!--<div class="mt-6 px-4 sm:hidden">
+      <a routerLink="/categories" class="block text-sm font-semibold text-indigo-600 hover:text-indigo-500">
         Browse all categories
         <span aria-hidden="true"> &rarr;</span>
       </a>
-    </div>
+    </div>-->
   </section >
 
   <div class="row">
-    <div class="card-containerr">
+    <div class="card-containerr"style="margin-bottom: 5px;">
       <div class="cardd" *ngFor="let article of articles.slice(0, 4)">
-        <a routerLink="">
-        <img [src]="article.photo" class="card-img-top" alt="" style=" width: 30; height: 30;">
+        <a routerLink="" style="text-align: center;">
+        <img [src]="article.photo" class="card-img-top" alt="" style=" width: 60%; height: 29%; margin-left: 40px;margin-top: 5px;">
         <div class="card-bodyy">
           <h5 class="card-title">{{ article.titre }}</h5>
           <div> Statut : {{ article.statut ? 'disponible' : 'Non disponible'}}</div>
@@ -65,10 +54,7 @@
           <div> Prix:<span class="article-price"> {{ article.prix }} Dt </span></div>
           <div>Catégorie: <span class="article-price">{{ article.categorie.titre }}</span></div>
           <div  class="edit-button-container">
-          <button class="primary" (click)="showArticleDetails(article)">Détail</button>
-          <button class="secondary" (click)="addToCart(article)"*ngIf="userType === 'user' || userType === 'vendeur'" class="secondary">
-            Add To cart
-           </button>
+          <button class="primary" style="margin-top: 10px;" (click)="showArticleDetails(article)">Détail</button>
         </div>
         </div>
         </a>
@@ -92,7 +78,7 @@
   <h1 class="page-title text-center">Les Enchères</h1>
   <div class="row">
     <div class="col-md-4" *ngFor="let enchere of encheres">
-      <div class="card auction-card">
+      <div class="card auction-card" style="margin-bottom: 20%;">
         <div class="card-body">
           <p class="card-text auction-date">Date de début : {{ enchere.dateDebut ? formatDate(parseDate(enchere.dateDebut)) : '' }}</p>
           <p class="card-text auction-date">Date de fin : {{ enchere.dateFin ? formatDate(parseDate(enchere.dateFin)) : '' }}</p>
@@ -101,10 +87,10 @@
             <!-- Utilisation de ng-container pour boucler sur les articles -->
             <ng-container *ngFor="let article of getArticlesForEnchere(enchere.id)">
               <div style="display: inline-block; margin-right: 10px;">
-              <div>{{ article.titre }}</div>
-              <img [src]="article.photo" alt="Photo de l'article" width="100" height="100" style="border-radius: 20%;">
+              <div style="text-align: center;">{{ article.titre }}</div>
+              <img [src]="article.photo" alt="Photo de l'article" width="100" height="100" style="border-radius: 20%;margin-left: 35%;">
 
-              <div> Prix départ: {{ article.prix }} Dt</div>
+              <div style="text-align: center; color: rgb(146, 10, 10);font-weight: bold;"> {{ article.prix }} Dt</div>
             </div>
             </ng-container>
           </div>
@@ -112,73 +98,4 @@
       </div>
     </div>
   </div>
-</div>
-
-<!-- Perks -->
-<div>
-  <section aria-labelledby="perks-heading" class="mt-5 border-t border-gray-200 bg-gray-50">
-    <h2 id="perks-heading" class="sr-only">Our perks</h2>
-
-    <div class="mx-auto max-w-7xl py-24 px-4 sm:px-6 sm:py-32 lg:px-8">
-      <div class="grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 lg:gap-x-8 lg:gap-y-0">
-        <div class="text-center md:flex md:items-start md:text-left lg:block lg:text-center">
-          <div class="md:flex-shrink-0">
-            <div class="flow-root">
-              <img class="-my-1 mx-auto h-24 w-auto"
-                src="https://tailwindui.com/img/ecommerce/icons/icon-returns-light.svg" alt="">
-            </div>
-          </div>
-          <div class="mt-6 md:mt-0 md:ml-4 lg:mt-6 lg:ml-0">
-            <h3 class="text-base font-medium text-gray-900">Free returns</h3>
-            <p class="mt-3 text-sm text-gray-500">Not what you expected? Place it back in the parcel and attach the
-              pre-paid postage stamp.</p>
-          </div>
-        </div>
-
-        <div class="text-center md:flex md:items-start md:text-left lg:block lg:text-center">
-          <div class="md:flex-shrink-0">
-            <div class="flow-root">
-              <img class="-my-1 mx-auto h-24 w-auto"
-                src="https://tailwindui.com/img/ecommerce/icons/icon-calendar-light.svg" alt="">
-            </div>
-          </div>
-          <div class="mt-6 md:mt-0 md:ml-4 lg:mt-6 lg:ml-0">
-            <h3 class="text-base font-medium text-gray-900">Same day delivery</h3>
-            <p class="mt-3 text-sm text-gray-500">We offer a delivery service that has never been done before.
-              Checkout
-              today and receive your products within hours.</p>
-          </div>
-        </div>
-
-        <div class="text-center md:flex md:items-start md:text-left lg:block lg:text-center">
-          <div class="md:flex-shrink-0">
-            <div class="flow-root">
-              <img class="-my-1 mx-auto h-24 w-auto"
-                src="https://tailwindui.com/img/ecommerce/icons/icon-gift-card-light.svg" alt="">
-            </div>
-          </div>
-          <div class="mt-6 md:mt-0 md:ml-4 lg:mt-6 lg:ml-0">
-            <h3 class="text-base font-medium text-gray-900">All year discount</h3>
-            <p class="mt-3 text-sm text-gray-500">Looking for a deal? You can use the code &quot;ALLYEAR&quot; at
-              checkout and get money off all year round.</p>
-          </div>
-        </div>
-
-        <div class="text-center md:flex md:items-start md:text-left lg:block lg:text-center">
-          <div class="md:flex-shrink-0">
-            <div class="flow-root">
-              <img class="-my-1 mx-auto h-24 w-auto"
-                src="https://tailwindui.com/img/ecommerce/icons/icon-planet-light.svg" alt="">
-            </div>
-          </div>
-          <div class="mt-6 md:mt-0 md:ml-4 lg:mt-6 lg:ml-0">
-            <h3 class="text-base font-medium text-gray-900">For the planet</h3>
-            <p class="mt-3 text-sm text-gray-500">We’ve pledged 1% of sales to the preservation and restoration of the
-              natural environment.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
 </div>

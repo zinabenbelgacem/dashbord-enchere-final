@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/_service/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { ArticleService } from 'src/app/article.service'; // Assurez-vous d'importer le service ArticleService approprié
 import { EnchersServiceService } from 'src/app/enchers-service.service';
-
+import { Location } from '@angular/common';
 interface Article {
   id: number;
   titre: string;
@@ -47,7 +47,7 @@ export class ArticlesVendeurComponent implements OnInit {
     private articleService: ArticleService, // Utilisation du service ArticleService
     private snackBar: MatSnackBar,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,private location: Location
   ) {
     this.articleForm = this.fb.group({
       titre: ['', Validators.required],
@@ -106,6 +106,9 @@ export class ArticlesVendeurComponent implements OnInit {
         return throwError(errorMessage);
       })
     );
+  }
+  goBack(): void {
+    this.location.back();
   }
   submitArticle() {
     if (this.articleForm.valid) {

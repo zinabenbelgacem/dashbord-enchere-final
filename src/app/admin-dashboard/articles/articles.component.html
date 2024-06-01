@@ -3,10 +3,12 @@
 
 <section class="grid-container">
   <h2 class="header">Liste des articles</h2>
-  <button type="button" class="btn-add" (click)="createArticle()"style=" font-style: normal;border-radius: 10px;margin-right: 55px;">  <i class="fas fa-pencil-alt"></i> Ajouter</button>
+
+
+ <button type="button" class="btn-add" (click)="createArticle()"style=" font-style: normal;border-radius: 10px;margin-right: 55px;">  <i class="fas fa-pencil-alt"></i> Ajouter</button>
  
   <div *ngIf="onCreatee" class="form-container">
-    <h2>Ajouter article</h2>
+    <h2 style=" margin-bottom: 80px; margin-left: 35%; ">Ajouter un article</h2>
     <div class="row">
     <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
      <div class="form-row">
@@ -29,10 +31,6 @@
         <label for="prix">Prix</label>
         <input type="number" class="form-control" id="prix" formControlName="prix" placeholder="Entrez le prix" required>
       </div>    
-      <!--<div class="form-group ">
-        <label for="prixvente">Prix Vente</label>
-        <input type="number" class="form-control" id="prixvente" formControlName="prixvente" placeholder="Entrez si l'article est prixvente ou non" required>
-      </div>-->
       <div class="form-group ">
         <label for="livrable">Livrable</label>
         <input type="text" class="form-control" id="livrable" formControlName="livrable" placeholder="Entrez si l'article est livrable ou non" required>
@@ -47,6 +45,7 @@
         <label for="quantite">Quantité</label>
         <input type="text" class="form-control" id="quantiter" formControlName="quantiter" placeholder="Entrez la quantité" required>
       </div>
+   
       <div class="form-group">
         <label for="categorie">Catégorie</label>
         <select class="form-control" id="categorie" formControlName="categorie">
@@ -68,7 +67,6 @@
         <th>Titre</th>
         <th>Description</th>
         <th>Prix</th>
-        <th>Prix Vente</th>
         <th>Livrable</th>
         <th>Statut</th>
         <th>Quantité</th>
@@ -86,9 +84,7 @@
       </td>
         <td>{{ article?.titre }}</td>
         <td>{{ article?.description }}</td>
-        
         <td>{{ article?.prix }}Dt</td>
-        <td> {{ article?.prixvente }}Dt</td>
         <td>{{ article?.livrable }}</td>
         <td>{{ article?.statut }}</td>
         <td>{{ article?.quantiter }}</td>
@@ -101,15 +97,16 @@
             border-radius: 5px;
             padding: 8px 16px; 
             font-size: 14px;" (click)="editArticleFunc(article)">
-                <i class="fas fa-edit"></i>
+                <i class="fas fa-edit"style=" color: #fff;"></i>
             </button>
-              <button type="button" class="btn btn-delete"style="color: #fff;
+              <button type="button" class="btn btn-delete"style=" 
               background-color: #dc3545;
               margin-right: 5px;
               border-radius: 5px;
               padding: 8px 16px; 
+              color: #fff;
               font-size: 14px;" (click)="deleteArticle(article.id.toString())">
-                  <i class="fas fa-trash"></i>
+                  <i class="fas fa-trash" style=" color: #fff;"></i>
               </button>
           </div>
       </td>     
@@ -121,7 +118,7 @@
 
 <!-- Formulaire pour éditer un article -->
 <div *ngIf="editMode"class="form-containerr">
-  <h2>Modifier l'article</h2>
+  <h2 style="text-align: center;">Modifier un article</h2>
   <div class="row">
   <form [formGroup]="editForm" (ngSubmit)="onSubmit()" class="card p-3">
     <div class="form-row">

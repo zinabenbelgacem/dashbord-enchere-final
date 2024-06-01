@@ -21,9 +21,9 @@
   padding: 15px; /* Increase padding for spacing */
 }
 .form-containerr{
-  position: relative;
-  margin-top: -55rem; 
-  margin-left:58%;
+  position: absolute;
+  margin-left:59%;
+  top: 69%;
   transform: translate(-50%, -50%);
   width: 79%; 
   padding: 20px;
@@ -34,12 +34,12 @@
 }
 
 .form-container {
-  position: relative;
-  margin-top: -47rem; 
-  margin-left:55%;
+  position: absolute;
+  top: 69%;
+  margin-left:54%;
   transform: translate(-50%, -50%);
-  width: 75%; 
-  padding: 20px;
+  width: 80%; 
+  padding: 10px;
   border-radius: 8px;
   background-color: rgb(255, 255, 255); /* Set the background color to white */
   color: black; /* Set the text color to black for better visibility */
@@ -88,7 +88,7 @@
 }
 
   .header {
-      top:120px;
+      top:90px;
       text-align: center ;
       font-size: 24px; /* Ajustez la taille de la police selon vos préférences */
       margin-bottom: 30px;
@@ -97,7 +97,8 @@
       transform: translate(-50%, -50%); /* Déplacement de -50% de la largeur et de la hauteur du titre pour le centrer */
       z-index: 1000; /* Pour s'assurer que le titre est au-dessus des autres éléments */
       font-family: Arial, Helvetica, sans-serif; /* Famille de police */
-     
+      margin-top: 19px;
+      margin-left: 10%;
       color: #000000; /* Couleur du texte */
       text-align: center; /* Centrage du texte */
     }
@@ -190,10 +191,11 @@
   cursor: pointer;
 }
 .grid-container {
+ margin-left: 70px;
   display: flex; /* Assuming it's already using flexbox */
   flex-direction: column; /* Stack elements vertically */
   justify-content: space-between; /* Reduce space between elements */
-  width: 220%;
+  width: 150%;
   display: grid;
   gap: 20px;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -239,7 +241,6 @@ h2 {
   font-size: 24px;
   color: #000000;
   font-family: 'Times New Roman', Times, serif;
-  text-align: center; /* Centrer le texte */
 }
 /* Styling pour les icônes */
 .fa-edit{

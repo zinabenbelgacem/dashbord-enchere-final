@@ -1,12 +1,12 @@
 <app-header></app-header>
 <app-sidebar></app-sidebar>
         <div *ngIf="loading" class="loading">Chargement des catégories...</div>
-        <h2 class="header">Liste catégories</h2>
+        <h2 class="header">Liste des catégories</h2>
         <button type="button" class="btn-add" style=" font-style: normal;border-radius: 10px;margin-right: 20px;"(click)="onCreate()">
           <i class="fas fa-pencil-alt"></i> Ajouter
         </button>
         <div *ngIf="onCreatee" class="form-container">
-          <h2>Ajouter catégorie</h2>
+          <h2>Ajouter une catégorie</h2>
           <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
             <div class="form-group">
               <label for="titre">Titre catégorie</label>
@@ -49,10 +49,10 @@
               <td>
                 <div class="button-container">
                 <button type="button" class="btn btn-edit" style="color: #fff;" (click)="editCategory(category)">
-                  <i class="fas fa-edit"></i>
+                  <i class="fas fa-edit"style="color: #fff;"></i>
                 </button>
                 <button type="button" class="btn btn-delete" style="color: #fff;" (click)="deleteCategory(category.id.toString())">
-                  <i class="fas fa-trash"></i>
+                  <i class="fas fa-trash"style="color: #fff;"></i>
                 </button>
               </div>
               </td>
@@ -61,7 +61,7 @@
         </table>
         
         <div *ngIf="editMode"class="form-containerr">
-          <h2>Modifier la catégorie</h2>
+          <h2>Modifier une catégorie</h2>
           <form [formGroup]="editForm" (ngSubmit)="onSubmit()" class="card p-3">
             <div class="form-group">
               <label for="edit-titre">Titre</label>

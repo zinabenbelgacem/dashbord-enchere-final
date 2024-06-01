@@ -6,7 +6,7 @@ interface Enchere {
   id?: number;
   dateDebut: string;
   dateFin: string;
-  parten: { id: number }; // Ajoutez la propriété 'nom' à l'objet 'parten'
+  //parten: { id: number }; // Ajoutez la propriété 'nom' à l'objet 'parten'
   admin: { id: number};
   articles: { id: number }[];
 }
@@ -101,7 +101,7 @@ updateIdEncherss(articleId: number, enchereId: number): Observable<any> {
     );
   }
   getAllEncheres(): Observable<Enchere[]> {
-    return this.http.get<Enchere[]>('http://localhost:3002/enchere/getallEncheres');
+    return this.http.get<Enchere[]>('http://localhost:3002/enchere/getallEncheress');
   }
 
   getEnchereById(id: number): Observable<Enchere> {

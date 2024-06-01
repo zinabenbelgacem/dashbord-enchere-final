@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import {  FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ArticleService } from '../article.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 interface Article {
@@ -18,6 +17,7 @@ interface Article {
   statut: string;
   quantiter: number;
   categorie: Categorie;
+  enchers_id:string
 }
 
 interface Categorie {
@@ -59,6 +59,7 @@ export class ArticlesAdminComponent implements OnInit {
     livrable: false,
     statut: '',
     quantiter: 0,
+    enchers_id:'',
     categorie: { id: 0, titre: 'Default Category', description: '', image: '' }
   };
   
@@ -88,6 +89,22 @@ export class ArticlesAdminComponent implements OnInit {
       }
     );
   }
+  filteredArticles: Article[] = [];
+  searchArticles(event: Event) {
+    const query = (event.target as HTMLInputElement).value.toLowerCase();
+    // Si la requête de recherche est vide, afficher tous les articles
+    if (!query.trim()) {
+        this.filteredArticles = this.articles;
+        console.log("ccc",this.filteredArticles );
+    } else {
+        // Filtrer les articles dont le titre contient la requête de recherche
+        this.filteredArticles = this.articles.filter(article =>
+            article.titre.toLowerCase().includes(query)
+        
+        );
+    }
+}
+
 
   getAllArticles() {
     this.articleService.getAllArticles().subscribe(
@@ -114,6 +131,7 @@ export class ArticlesAdminComponent implements OnInit {
       statut: ['', Validators.required],
       quantiter: [0, Validators.required],
       categorie: [null, Validators.required], 
+      enchers_id: [''],
     });
 
     this.editForm = this.formBuilder.group({
@@ -126,6 +144,7 @@ export class ArticlesAdminComponent implements OnInit {
       statut: ['', Validators.required],
       quantiter: [0, Validators.required],
       categorie: [null, Validators.required], 
+      enchers_id: [''],
     });
   }
 
@@ -142,6 +161,7 @@ export class ArticlesAdminComponent implements OnInit {
       statut: article.statut,
       quantiter: article.quantiter,
       categorie: article.categorie ? article.categorie.id : null,
+      enchers_id:article.enchers_id,
     });
     this.photoUrl = article.photo;
   }
@@ -160,8 +180,7 @@ export class ArticlesAdminComponent implements OnInit {
           this.snackBar.open('Article supprimé avec succès!', 'Fermer', {
             duration: 3000
           });
-          this.getAllArticles();
-          window.location.reload();
+          this.refreshAllArticles();
         }
       },
       (error: HttpErrorResponse) => {
@@ -173,7 +192,19 @@ export class ArticlesAdminComponent implements OnInit {
       }
     );
   }
-
+  refreshAllArticles(){
+    this.articleService.getAllArticles().subscribe(
+      (articles: Article[]) => {
+        this.articles = articles;
+      },
+      (error: HttpErrorResponse) => {
+        console.error('Erreur lors du chargement des articles:', error);
+        this.snackBar.open('Erreur lors du chargement des articles!', 'Fermer', {
+          duration: 3000
+        });
+      }
+    );
+  }
   cancelCreation() {
     this.onCreatee = false;
     this.myForm.reset();
@@ -187,6 +218,7 @@ export class ArticlesAdminComponent implements OnInit {
       this.createArticle();
     }
   }
+
   updateArticle(updatedArticle: Article) {
     if (this.editForm && this.editForm.valid && this.editArticle) {
       const updatedArticleData: Article = {
@@ -199,6 +231,7 @@ export class ArticlesAdminComponent implements OnInit {
         livrable: this.editForm.value.livrable,
         statut: this.editForm.value.statut,
         quantiter: this.editForm.value.quantiter,
+        enchers_id:this.editForm.value.enchers_id,
         categorie: {
           id: this.editForm.value.categorie,
           titre: '', 
@@ -206,7 +239,7 @@ export class ArticlesAdminComponent implements OnInit {
           image: ''
         },
       };
-      this.articleService.updateArticle(updatedArticleData.id.toString(), updatedArticleData).subscribe(
+      this.articleService.updateArticle(this.editArticle.id.toString(), updatedArticleData).subscribe(
         Response => {
           this.editMode = false;
           this.editArticle = null;
@@ -240,6 +273,7 @@ export class ArticlesAdminComponent implements OnInit {
         livrable: this.myForm.value.livrable,
         statut: this.myForm.value.statut,
         quantiter: this.myForm.value.quantiter,
+        enchers_id:this.myForm.value.enchers_id,
         categorie: {
           id: this.myForm.value.categorie,
           titre: '', // Provide empty values for now, they will be overwritten if needed

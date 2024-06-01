@@ -43,12 +43,7 @@ export class UtulisateursComponent implements OnInit {
       tel: new FormControl(),
       type: new FormControl(),
       password: new FormControl(),
-     // codePostal: new FormControl(),
-     // pays: new FormControl(),
-      //ville: new FormControl(),
       cin: new FormControl(),
-      //longitude: new FormControl(),
-     // latitude: new FormControl()
     });
 
     this.userService.getAllUsers().subscribe(

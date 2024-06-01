@@ -65,6 +65,40 @@
             margin: 0;
             font-size: 14px;
         }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #3e31ee;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #2c24d0;
+        }
     </style>
 </head>
 <body>
@@ -72,56 +106,63 @@
     <main>
         <!-- Présentation de l'entreprise -->
         <section id="company">
-            <h2>Notre entreprise</h2>
-            <p>Le site d'enchères est un marché en ligne permettant aux utilisateurs d'acheter et de vendre une variété de produits, allant des articles de collection aux articles ménagers. Notre plateforme offre une expérience sécurisée et transparente pour tous les types d'enchères.</p>
+            <h2>À propos de nous</h2>
+            <p>Bienvenue sur ZNEnchères, votre destination de confiance pour les enchères en ligne. Fondé en 2024, notre site s'est imposé comme un leader dans le domaine des enchères en Tunisie, offrant une plateforme sécurisée et innovante pour l'achat et la vente d'articles variés.</p>
         </section>
-
+        
         <!-- Histoire de l'entreprise -->
-        <section id="history">
-            <h2>Notre histoire</h2>
-            <p>Fondée en 2005, l'entreprise a débuté comme une petite startup dans un garage. Au fil des ans, nous avons connu une croissance exponentielle, étendant notre portée à des marchés internationaux et devenant l'un des principaux acteurs de l'industrie des enchères en ligne.</p>
+        <section id="history" >
+            <h2>Notre Histoire</h2>
+            <p>L'histoire de ZNEnchères commence avec une vision claire : rendre les enchères accessibles à tous, tout en célébrant le riche patrimoine culturel et les objets uniques de notre région. Nos fondateurs, passionnés par les objets d'art, les antiquités et les trésors cachés, ont créé cette plateforme pour rassembler vendeurs et acheteurs dans un environnement convivial et fiable.</p>
+            <img src="assets/histo.jpg" style="margin-left: 70px; border-radius: 20px;"/>
         </section>
 
         <!-- Mission et valeurs -->
         <section id="mission-values">
-            <h2>Notre mission et nos valeurs</h2>
-            <p>Notre mission est de fournir une plateforme d'enchères en ligne sécurisée et conviviale, offrant une gamme diversifiée de produits tout en promouvant l'intégrité, la transparence et l'innovation.</p>
+            <h2>Ce Que Nous Offrons</h2>
+            <p><strong>Diversité des Articles :</strong> Des antiquités rares aux objets de collection modernes, en passant par les accessoires traditionnels et les œuvres d'art, notre catalogue est vaste et varié.</p>
+            <p><strong>Sécurité et Confiance :</strong> Nous mettons un point d'honneur à assurer des transactions sécurisées et transparentes pour tous nos utilisateurs.</p>
+            <p><strong>Support Client Dévoué :</strong> Notre équipe de support est toujours prête à assister nos clients pour une expérience d'enchère fluide et agréable.</p>
         </section>
-
-        <!-- L'équipe -->
         <section id="team">
             <h2>Notre équipe</h2>
-            <div class="team-member">
-                <img src="assets/c63a89ddfeb298f55031cb394b367b57.jpg" alt="John Doe">
-                <h3>John Doe</h3>
-                <p>CEO et fondateur</p>
-            </div>
-            <div class="team-member">
-                <img src="assets/547b086ede609fd23c0b6f312b7ffed5.jpg" alt="Jane Smith">
-                <h3>Jane Smith</h3>
-                <p>Directrice de l'expérience client</p>
-            </div>
+            <p style="color: black;">Chez ZNEnchères, nous sommes fiers de notre équipe dévouée et passionnée. Nos experts travaillent sans relâche
+                 pour vous offrir les meilleures enchères et une expérience utilisateur exceptionnelle. </p>
+                 <div class="team-members">
+                    <div class="team-member">
+                        <img src="assets/462e6cb9-7a5d-4cc3-920d-696ba0a90b34.jpg" alt="Zina ben belgassem">
+                        <div class="member-info">
+                            <h3>Zina Ben Belgassem</h3>
+                            <p>Dèveloppeuse Frontend</p>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <img src="assets/131881762.jpg" alt="Nawres Wear">
+                        <div class="member-info">
+                            <h3>Nawres Wear</h3>
+                            <p>Dèveloppeuse Backend</p>
+                        </div>
+                    </div>
+                </div>
+                
+                
         </section>
-
         <!-- Engagement envers la communauté -->
         <section id="community">
-            <h2>Notre engagement envers la communauté</h2>
-            <p>Nous sommes fiers de soutenir diverses organisations caritatives et initiatives communautaires à travers des dons et des partenariats. De plus, nous encourageons nos employés à participer activement au bénévolat dans leurs communautés locales.</p>
+            <h2>Nos Valeurs</h2>
+            <p><strong>Intégrité :</strong> Nous opérons avec la plus grande transparence, garantissant que chaque enchère est juste et honnête.</p>
+            <p><strong>Passion :</strong> Nous sommes passionnés par les objets uniques et les histoires qu'ils racontent, et nous nous efforçons de partager cette passion avec notre communauté.</p>
+            <p><strong>Innovation :</strong> Nous investissons constamment dans de nouvelles technologies pour améliorer notre plateforme et offrir la meilleure expérience utilisateur possible.</p>
         </section>
+      
 
         <!-- Récompenses et reconnaissances -->
         <section id="awards">
-            <h2>Récompenses et reconnaissances</h2>
-            <p>Au fil des ans, nous avons été honorés par plusieurs prix prestigieux de l'industrie pour notre innovation, notre service client exceptionnel et notre impact positif sur la communauté.</p>
+            <h2>Rejoignez Notre Communauté</h2>
+            <p>Chez ZNEnchères, nous croyons en la force de la communauté. Rejoignez des milliers d'autres passionnés et découvrez des trésors cachés tout en vendant vos propres objets précieux. Inscrivez-vous dès aujourd'hui et commencez votre aventure d'enchères avec nous.</p>
         </section>
 
-        <!-- Témoignages et succès clients -->
-        <section id="testimonials">
-            <h2>Témoignages et succès clients</h2>
-            <p>"Grâce à la plateforme d'enchères, j'ai pu trouver des articles uniques à des prix incroyables. Je recommande vivement ce site à tous les passionnés de collections!" - Amanda B.</p>
-            <p>"En tant que vendeur sur le site d'enchères, j'ai pu atteindre un public mondial et augmenter mes ventes de manière significative. C'est une expérience formidable!" - Mark S.</p>
-        </section>
+      
     </main>
-
 </body>
 </html>

@@ -2,7 +2,7 @@
 <app-sidebar></app-sidebar>
 <div class="containerr">
     <div class="header">
-        <h1  style="text-align: center; font-style: normal; margin-bottom: 5px;">Liste Utilisateurs</h1>
+        <h1  style="text-align: center; font-style: normal; margin-bottom: 5px;">Liste des utilisateurs</h1>
     </div>
    
     <div class="new-user-section">
@@ -16,20 +16,20 @@
         <button class="btn btn-ok" (click)="hideAlert()">OK</button>
     </div>
     <form [formGroup]="userForm" class="user-form">
-        <table class="table table-striped"class="table table-striped custom-table">
-            <thead>
+        <table class="table table-striped"class="table table-striped custom-table" >
+            <thead class="head">
                 <tr>
                     <th>Profil</th>
                     <th>Nom</th>
                     <th>Prénom</th>
                     <th>Email</th>
                     <th>Téléphone</th>
-                    <th>CIN</th>
+                    <!--<th>CIN</th>-->
                     <th>Type</th>
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="body">
                 <ng-container *ngFor="let user of users.data">
                     <tr>
                         <td>
@@ -46,7 +46,7 @@
                         <td>{{ user.email }}</td> 
                      <!--- <td>{{ user.password }}</td>--> 
                         <td>{{ user.tel }}</td>
-                        <td>{{ user.cin }}</td>
+                        <!--<td>{{ user.cin }}</td>-->
                         <td>{{ user.type }}</td>
                         <td class="actions">
                             <button [routerLink]="['/users', user?.id, 'edit']" class="btn btn-edit">

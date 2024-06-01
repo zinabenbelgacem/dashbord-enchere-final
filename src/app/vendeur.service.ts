@@ -18,8 +18,8 @@ import { catchError } from 'rxjs/operators';
   longitude: number ; 
   latitude: number ;
   photo: String
-
 }
+
 interface Article {
   id: number; // Assurez-vous que le type correspond à votre base de données
   titre: string;

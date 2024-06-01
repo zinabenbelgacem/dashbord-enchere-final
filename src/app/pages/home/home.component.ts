@@ -6,13 +6,17 @@ import { BehaviorSubject, Observable, Subject, Subscription, catchError, of, thr
 import { User } from 'src/app/_service/user';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EnchersServiceService } from 'src/app/enchers-service.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/_service/auth.service';
 import { ArticleService } from 'src/app/article.service';
 import { tap, map, switchMap } from 'rxjs/operators';
 import { CardsComponent } from 'src/app/shopping-cart/cards/cards.component';
 import { ToastrService } from 'ngx-toastr';
+import { PanierService } from 'src/app/shopping-cart/cards/panier.service';
+import { DetailArticleDialogComponent } from 'src/app/detail-article-dialog/detail-article-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { Part_En } from 'src/app/part-en.service';
 interface Categorie {
   id: number;
   titre: string;
@@ -34,10 +38,10 @@ interface Enchere {
   id?: number;
   dateDebut: string;
   dateFin: string;
-  parten: { id: number };
+  parten: Part_En[];
   admin: { id: number };
   articles: { id: number }[];
-  meetingId?: string; 
+  etat:string;
   
 }
 
@@ -47,7 +51,7 @@ interface Article {
   description: string;
   photo: string;
   prix:string;
-  prixvente?: number;
+  
   livrable:boolean;
   statut:string;
   quantiter:number;
@@ -82,16 +86,11 @@ export class HomeComponent implements OnInit {
     userData: User | null = null;
     userMenu: boolean = false;
     showUserInfo = false;
-
-  //images: string[] = ['assets/33.jpg', 'assets/15.jpg', 'assets/36.jpg'];
-  constructor(private categoryService: CategoriesService,
-    private formBuilder: FormBuilder,
-    private encherService: EnchersServiceService,
-    private snackBar: MatSnackBar,  public router: Router,public authService: AuthService,
-   private articleService: ArticleService,
-   private authenticationService: AuthService,
-   private toastrService: ToastrService,
-   private enchereService: EnchersServiceService,private categoriesService:CategoriesService
+    pageReloaded = false;
+  constructor(private categoryService: CategoriesService,private formBuilder: FormBuilder,
+     private encherService: EnchersServiceService,private snackBar: MatSnackBar, private route: ActivatedRoute,
+      public router: Router,public authService: AuthService,private articleService: ArticleService,
+      private authenticationService: AuthService,private enchereService: EnchersServiceService,public dialog: MatDialog
   ) {
     this.myForm = this.createEnchereForm();
     this.editForm = this.createEnchereForm();
@@ -110,7 +109,8 @@ export class HomeComponent implements OnInit {
       id: [0],
       dateFin: [new Date()],
       dateDebut: [new Date()],
-      parten: ['', Validators.required], 
+      parten: this.formBuilder.control([]),
+      etat: ['', Validators.required], 
       admin: ['', Validators.required], 
       articles: this.formBuilder.control([]) // Utilisez control au lieu de array
     });
@@ -119,8 +119,9 @@ export class HomeComponent implements OnInit {
       id: [0],
       dateFin: [new Date()],
       dateDebut: [new Date()],
-      parten: ['', Validators.required], 
+      parten:  this.formBuilder.control([]) , 
       admin: ['', Validators.required], 
+      etat: ['', Validators.required], 
       articles: this.formBuilder.control([]) 
     });    
     this.formattedDateDebut = this.formatDate(this.myForm.value.dateDebut);
@@ -149,6 +150,20 @@ export class HomeComponent implements OnInit {
     });
 }
   ngOnInit(): void {
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      console.log("storedTokennnn",storedToken);
+      const tokenPayload = JSON.parse(atob(storedToken.split('.')[1]));
+      console.log(tokenPayload);
+      if (tokenPayload.sub) {
+        const username = tokenPayload.sub;
+        console.log('Nom utilisateur :', username);
+    } else {
+        console.log('Aucun nom d\'utilisateur trouvé dans le token');
+    }
+      this.token.next(storedToken);
+      //this.decodeToken();
+    }
     this.categoryService.getAllCategories().subscribe({
       next: (categories: Category[]) => { // Ajouter le type Category[]
         this.categories = categories;
@@ -184,6 +199,13 @@ export class HomeComponent implements OnInit {
       },
       error: (error) => console.error(error),
     });
+  
+    const loggedIn = this.route.snapshot.queryParams['loggedIn'];
+    if (loggedIn === 'true') {
+      // Clear the URL parameter
+      history.replaceState({}, document.title, '.');
+    }
+
   }
 
   countEncheresEnCours() {
@@ -361,31 +383,17 @@ selectedArticle: Article | null = null;
   public articlesForEnchere: Article[] = [];
   public articlesForEnchereMap: { [enchereId: number]: Article[] } = {};
   public articlesForEnchereMapp: { [enchereId: number]: Articlee[] } = {};
- // Déclarez la propriété isLoggedInSubject avec la bonne visibilité
  private isLoggedInSubject = new BehaviorSubject<boolean>(false);
  authStatus = this.isLoggedInSubject.asObservable();
   
- addToCart(article: any) {
-   const quantity = 1; // Définissez la quantité de l'article à ajouter au panier
-   this.articleService.addArticleToCart(article, quantity).subscribe(
-       (response) => {
-           // Gérer la réponse du service si nécessaire
-           console.log("Article ajouté au panier avec succès :", response);
-       },
-       (error) => {
-           // Gérer l'erreur si nécessaire
-           console.error("Erreur lors de l'ajout de l'article au panier :", error);
-       }
-   );
-   const articleId = article.id; // Récupération de l'ID de l'article ajouté
-   console.log("ID de l'article ajouté au panier :", articleId);
-}
+ 
 createEnchereForm(): FormGroup {
   return this.formBuilder.group({
     id: [0],
     dateFin: [new Date()],
     dateDebut: [new Date()],
     parten: ['', Validators.required],
+    etat: ['', Validators.required], 
     admin: ['', Validators.required],
     articles: this.formBuilder.control([])
   });
@@ -486,10 +494,6 @@ joinMeeting(meetingId: string) {
     return `${year}-${month}-${day} T ${hours}:${minutes}`;
 }
 
-/*isLoggedIn(): boolean {
-  return !!this.token.value;
-}*/
-
 getAllArticles() {
   this.articleService.getAllArticles().subscribe(
     (articles: Article[]) => {
@@ -500,9 +504,13 @@ getAllArticles() {
     }
   );
 }
-showArticleDetails(article: Article) {
-  this.selectedArticle = article;
-  // Ajoutez d'autres logiques si nécessaire
+
+showArticleDetails(article: any) {
+  this.dialog.open(DetailArticleDialogComponent , {
+    width: '500px',
+    height:'500px',
+    data: article
+  });
 }
   getAllPartens() {
     this.encherService.getAllPartens().subscribe(
@@ -535,15 +543,16 @@ showArticleDetails(article: Article) {
   onCreate() {
     this.showAddForm = true;
     if (this.myForm.valid) {
-      const selectedUser = this.partens.find(partens => partens.id === this.myForm.value.parten); // Trouver l'utilisateur correspondant au nom sélectionné
+   //   const selectedUser = this.partens.find(partens => partens.id === this.myForm.value.parten); // Trouver l'utilisateur correspondant au nom sélectionné
       const selectedAdmin = this.admins.find(admin => admin.nom === this.myForm.value.admin); // Trouver l'administrateur correspondant au nom sélectionné
 
-      if (selectedUser && selectedAdmin) { // Vérifier si l'utilisateur et l'administrateur ont été trouvés
+      if (selectedAdmin) { // selectedUser &&   Vérifier si l'utilisateur et l'administrateur ont été trouvés
         const newEnchere: Enchere = {
           id: this.myForm.value.id,
           dateFin: this.formattedDateFin,
           dateDebut: this.formattedDateDebut,
-          parten: { id: selectedUser.id },
+          parten:this.myForm.value.partens,
+          etat: this.myForm.value.etat,
           admin: { id: selectedAdmin.id },
           articles: this.myForm.value.articles.map((article: any) => ({ id: article.id }))
         };
@@ -584,9 +593,10 @@ showArticleDetails(article: Article) {
       if (this.editForm.valid) {
         const updatedEnchere: Enchere = {
           id: this.editForm.value.id,
+          etat: this.editForm.value.etat,
           dateFin: this.editForm.value.dateFin,
           dateDebut: this.editForm.value.dateDebut,
-          parten: { id: this.editForm.value.parten },
+          parten: this.editForm.value.partens,//.map((parten: any) => ({ id: parten }))
           admin: { id: this.editForm.value.admin },
           articles: this.editForm.value.articles.map((article: any) => ({ id: article }))
         };
@@ -615,9 +625,10 @@ showArticleDetails(article: Article) {
       if (this.myForm.valid) {
         const newEnchere: Enchere = {
           id: this.myForm.value.id,
+          etat: this.myForm.value.etat,
           dateFin: this.myForm.value.dateFin,
           dateDebut: this.myForm.value.dateDebut,
-          parten: { id: this.myForm.value.parten },
+          parten: this.myForm.value.partens,
           admin: { id: this.myForm.value.admin },
           articles: this.myForm.value.articles.map((article: any) => ({ id: article.id }))
         };
@@ -650,7 +661,7 @@ showArticleDetails(article: Article) {
       id: enchere.id,
       dateFin: enchere.dateFin,
       dateDebut: enchere.dateDebut,
-      parten: enchere.parten.id, // Utilisez l'ID de l'utilisateur au lieu de l'objet complet
+      parten: enchere.parten ,// Utilisez l'ID de l'utilisateur au lieu de l'objet complet
       admin: enchere.admin.id, // Utilisez l'ID de l'administrateur au lieu de l'objet complet
       articles: enchere.articles ? enchere.articles.map(article => article) : [] // Vérifiez si enchere.articles est défini avant de mapper
     });

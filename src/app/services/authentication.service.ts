@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LoginForm, SignUpForm, User } from '../interfaces/user';
-import { API_URL } from '../constants';
+//import { API_URL } from '../constants';
 import { BehaviorSubject } from 'rxjs';
 //import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
@@ -33,20 +33,6 @@ export class AuthenticationService {
     });
   }
 
-  signUp(data: SignUpForm) {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json; charset=utf-8',
-    });
-    return this.httpClient.post(`${API_URL}/auth/signup`, data, { headers });
-  }
-
-  logIn(data: LoginForm) {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json; charset=utf-8',
-    });
-    return this.httpClient.post(`${API_URL}/auth/login`, data, { headers });
-  }
-
   isLoggedIn(): boolean {
     return !!this.token.value;
   }
@@ -66,9 +52,4 @@ export class AuthenticationService {
     localStorage.removeItem('token');
   }
 
-  /*decodeToken(): void {
-    const decoded = this.jwtHelper.decodeToken(this.token.value!);
-    this.userData.next(decoded.user as User);
-    console.log(this.userData.value);
-  }*/
 }

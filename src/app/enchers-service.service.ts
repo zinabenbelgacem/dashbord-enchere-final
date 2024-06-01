@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
+import { Part_En } from './part-en.service';
 interface Enchere {
   id?: number;
   dateDebut: string;
   dateFin: string;
-  parten: { id: number };
+  parten: Part_En[];
   admin: { id: number };
   articles: { id: number }[];
- 
+  etat:string;
 }
 interface Article {
   id: number; // Assurez-vous que le type correspond à votre base de données
@@ -43,6 +44,8 @@ export class EnchersServiceService {
   getArticlesForEnchere(enchereId: number): Observable<Article[]> {
     return this.http.get<Article[]>(`http://localhost:3002/enchere/${enchereId}/articles`);
   }
+ 
+  
   addEnchere(enchere: Enchere): Observable<Enchere> {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -68,7 +71,7 @@ export class EnchersServiceService {
     );
   }
   getAllEncheres(): Observable<Enchere[]> {
-    return this.http.get<Enchere[]>('http://localhost:3002/enchere/getallEncheres');
+    return this.http.get<Enchere[]>('http://localhost:3002/enchere/getAllEncheres');
   }
   participateInEnchere(userId: number, enchereId: number): Observable<any> {
     return this.http.post<any>(`http://localhost:3002/enchere/${userId}/participate/${enchereId}`, {});

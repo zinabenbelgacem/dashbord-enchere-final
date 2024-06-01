@@ -1,17 +1,17 @@
 // Imports Angular
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Route, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 // Imports externes
 import { MatCardModule } from '@angular/material/card';
 import { ToastrModule } from 'ngx-toastr';
 import { JwtModule } from '@auth0/angular-jwt';
 import { BreadcrumbModule } from 'xng-breadcrumb';
-
+import { MatIconModule } from '@angular/material/icon';
 // Components
 import { AppComponent } from './app.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
@@ -27,7 +27,6 @@ import { HeaderComponent } from './admin-dashboard/header/header.component';
 import { ToastComponent } from './components/toast/toast.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { HomeLayoutComponent } from './layouts/home-layout/home-layout.component';
-import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ArticlesComponent } from './articles/articles.component';
@@ -53,8 +52,26 @@ import { PanierComponent } from './shopping-cart/cards/panier/panier.component';
 import { CardsComponent } from './shopping-cart/cards/cards.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { PartEnComponent } from './admin-dashboard/part-en/part-en.component';
-
-
+import { DetailArtComponent } from './detail-art/detail-art.component';
+import { ModificationCommentaireDialog } from './modification-commentaire/modification-commentaire.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { CommentairesComponent } from './admin-dashboard/commentaires/commentaires.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatListModule } from '@angular/material/list';
+import { SignalementComponent } from './signalement/signalement.component';
+import { SignalisationComponent } from './admin-dashboard/signalisation/signalisation.component';
+import { MessageComponent } from './message/message.component';
+import { environment } from './environments/environment';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireModule } from '@angular/fire/compat';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatInputModule } from '@angular/material/input';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { DetailArticleDialogComponent } from './detail-article-dialog/detail-article-dialog.component';
+import { CategoryArticlesComponent } from './category-articles/category-articles.component';
 const routes: Route[] = [
   {
     path: '',
@@ -71,6 +88,9 @@ const routes: Route[] = [
       { path: 'about', component: AboutComponent },
       { path: 'demandevendeur', component: DemandevendeurComponent },
       { path: 'articles/vendeur/articlesvendeur', component: ArticlesVendeurComponent },
+      { path: 'detail-article/:id', component: DetailArtComponent },
+      { path: 'messages', component: MessageComponent },
+
     ],
   },
   {
@@ -87,9 +107,16 @@ const routes: Route[] = [
       { path: 'enchere', component: EnchersuserComponent },
       { path: 'about', component: AboutComponent },
       { path: 'articlesvendeur', component: ArticlesVendeurComponent },
+      { path: 'detail-article/:id', component: DetailArtComponent },
+      { path: 'messages', component: MessageComponent },
+      //{ path: 'article', component: NotFoundComponent },
+      //{ path: 'categorie', component: NotFoundComponent },
+     // { path: 'demande-vendeur', component: NotFoundComponent},
+      //{ path: '**', component: NotFoundComponent }
+    
     ],
   },
-      {path: 'admin',component: AdminDashboardComponent,},  
+      {path: 'admin',component: AdminDashboardComponent},  
       { path: 'overview', component: OverviewComponent },
       { path: 'users', component: UtulisateursComponent}, 
       { path: 'users/:userId/edit', component: UserEditComponent },
@@ -102,14 +129,25 @@ const routes: Route[] = [
       { path: 'demande-vendeur', component: DemandevendeurAdminComponent}, 
       { path: 'paiment', component: PaimentComponent},
       { path: 'parten', component: PartEnComponent},
+      { path: 'commentaires', component: CommentairesComponent},
+      { path: 'signalisation', component: SignalisationComponent},
+      { path: 'messages', component: MessageComponent },
+      //{ path: 'articles', component: NotFoundComponent },
+     // { path: 'categories', component: NotFoundComponent },
+      //{ path: 'demandevendeur', component: NotFoundComponent},
+    
 ];
-
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
 @NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
     AppComponent,
     ArticlesVendeurComponent,
     ArticlesAdminComponent,
     NotFoundComponent,
+    CommentairesComponent,
     CategoriesAdminComponent,
     LoginComponent,
     ArticlesComponent,
@@ -134,12 +172,10 @@ const routes: Route[] = [
     FooterComponent,
     FilterComponent,
     SearchComponent,
-   // ProductCardComponent,
     CartComponent,
     ToastComponent,
     DashboardComponent,
     HomeLayoutComponent,
-    AdminLayoutComponent,
     AboutComponent,   
     VendeurDashboardComponent,
     AdminDashboardComponent,
@@ -151,17 +187,38 @@ const routes: Route[] = [
     PanierComponent,
     CardsComponent,
     PartEnComponent,
+    DetailArtComponent,
+    ModificationCommentaireDialog,
+    CommentairesComponent,
+    SignalementComponent,
+    SignalisationComponent,
+    MessageComponent,
+    DetailArticleDialogComponent,
+    CategoryArticlesComponent,
   ],
   imports: [
-    MatSnackBarModule,
     BrowserModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatIconModule,
     MatCardModule,
+    MatDividerModule,
+    MatFormFieldModule,
+    MatSnackBarModule,
+    MatDialogModule,
+    BrowserModule,
+    MatIconModule,
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    MatCardModule,
+    MatToolbarModule,
+    MatProgressBarModule,
+    MatListModule,
     RouterModule.forRoot(routes),
-   //CarouselModule,
     ToastrModule.forRoot({
       timeOut: 3000,
       closeButton: true,
@@ -177,7 +234,16 @@ const routes: Route[] = [
         },
       },
     }),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
     BreadcrumbModule,
+    AngularFirestoreModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
   ],
   providers: [],
   exports: [],

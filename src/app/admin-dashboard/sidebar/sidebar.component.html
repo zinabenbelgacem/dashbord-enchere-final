@@ -1,7 +1,7 @@
 
         <div class="sidebar">
             <div class="sidebar-header">
-                <a class="sidebar-title">Enchères</a>
+                <a class="sidebar-title">ZNEnchères</a>
             </div>
             <div class="sidebar-links">
                 <div *ngFor="let link of links">
@@ -10,7 +10,7 @@
                         <li *ngFor="let item of link.items" class="sidebar-item">
                             <a class="sidebar-link" (click)="navigateTo(item.name)">
                                 <i class="{{item.icon}} sidebar-icon"></i>
-                                <span class="sidebar-text">{{item.name ? item.name : 'overview'}}</span>
+                                <span class="sidebar-text">{{item.name}}</span>
                             </a>
                         </li>
                     </ul>

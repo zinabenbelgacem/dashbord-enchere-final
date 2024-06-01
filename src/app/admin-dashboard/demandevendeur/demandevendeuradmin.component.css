@@ -1,6 +1,6 @@
 .all{
-  margin-top: -73rem; 
-  margin-left: 20%;
+  margin-top: -74rem; 
+  margin-left: 25%;
   width: 100%;
  
 }  
@@ -10,7 +10,7 @@
   font-family: Arial, Helvetica, sans-serif;
   font-style: italic;
   font-size: 24px;
-  margin-bottom: 20px;
+  margin-bottom: 45px;
   margin-left: 10%;
 }
 .actions {
@@ -37,7 +37,7 @@
 .table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
+  margin-top: 25px;
 }
 
 .table th, .table td {

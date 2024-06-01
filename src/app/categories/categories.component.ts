@@ -4,6 +4,7 @@ import { CategoriesService } from '../categories.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthService } from '../_service/auth.service';
 
 interface Categorie {
   id: number;
@@ -57,7 +58,8 @@ onCreatee = false;
     private formBuilder: FormBuilder,
     private catService: CategoriesService,
     private router: Router,
-    private snackBar: MatSnackBar,private categoriesService:CategoriesService
+    private snackBar: MatSnackBar,private categoriesService:CategoriesService,
+    public authService: AuthService,
 ) {
   this.myForm = this.formBuilder.group({
     titre: ['', Validators.required],
@@ -86,6 +88,10 @@ public getArticlesForSelectedCategory(categoryId: number) {
           });
       }
   );
+}
+public closeCategoryDetails() {
+  this.selectedCategory = null;
+  this.categoryArticles = [];
 }
 
 

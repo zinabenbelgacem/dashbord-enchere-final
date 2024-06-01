@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, catchError, throwError } from 'rxjs';
 import { Panier } from './shopping-cart/cards/panier.service';
 import { NumberFormatStyle } from '@angular/common';
 interface Article {
@@ -9,7 +9,6 @@ interface Article {
   description: string;
   photo: string;
   prix:string;
-  prixvente?: number;
   livrable:boolean;
   statut:string;
   quantiter:number;
@@ -28,9 +27,19 @@ interface Categorie {
 })
 export class ArticleService {
   private baseUrl = 'http://localhost:3002/article'; 
+  private baseUrl2 = 'http://localhost:3004/panier';  
+  private baseUrl3 = 'http://localhost:3004/articles'; 
+  private selectedArticleSubject: BehaviorSubject<Article | null> = new BehaviorSubject<Article | null>(null);
+  public selectedArticle$: Observable<Article | null> = this.selectedArticleSubject.asObservable();
 
   constructor(private http: HttpClient) { }
-  private baseUrl2 = 'http://localhost:3004/panier'; 
+  public setSelectedArticle(article: Article): void {
+    this.selectedArticleSubject.next(article);
+  }
+
+  public getSelectedArticle(): Observable<Article | null> {
+    return this.selectedArticle$;
+  }
   getAllCategories(): Observable<Categorie[]> {
     return this.http.get<Categorie[]>(`http://localhost:3002/categorie/getallcategories`);
   }
@@ -52,6 +61,7 @@ export class ArticleService {
       })
     );
   }
+ 
   getArticleById(id: number): Observable<Article> {
     return this.http.get<Article>(`${this.baseUrl}/${id}`);
   }
@@ -85,31 +95,20 @@ updateArticleStatut(id: number, statut: string): Observable<any> {
     return this.http.get<number>(`http://localhost:3003/api/${userName}`);
   }
 
-  addArticleToCart(article: Article, quantitecde: number): Observable<any> {
-    const url = `${this.baseUrl2}/addToCart`;
-    const httpOptions = {
-      headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-      })
-      }
-    return this.http.post<any>(url, { article, quantitecde }).pipe(
-      catchError(error => {
-        console.error('Une erreur s\'est produite lors de l\'ajout de l\'article au panier:', error);
-        return throwError(error);
-      })
-    );
-  }
   ajouterArticleAuPanier(panierId: number, articleId: number): Observable<Panier> {
-    return this.http.post<Panier>(`http://localhost:3002/articles/${panierId}/ajouter-article`, articleId);
+    return this.http.post<Panier>(`http://localhost:3004/articles/${panierId}/${articleId}/ajouterarticle`,null);
   }
-  supprimerArticleDuPanier(panierId: number, articleId: number): Observable<Panier> {
-    return this.http.delete<Panier>(`http://localhost:3002/articles/${panierId}/supprimer-article`, { body: articleId });
+  supprimerArticleDuPanier(panierId: number, articleId: number): Observable<any> {
+    return this.http.delete<any>(`http://localhost:3004/articles/${panierId}/supprimer-article/${articleId}`);
   }
 
   addPrixVenteForArticle(enchereId: number, articleId: number, prixvente: number): Observable<any> {
     const url = `${this.baseUrl}/updateArticlePrice/${enchereId}/${articleId}`;
     return this.http.put<any>(url, { prixvente });
   }
-  
- 
+  viderPanier(id: number): Observable<any> {
+    const url = `${this.baseUrl3}/panier/${id}`;
+    return this.http.delete(url);
+}
+
 }

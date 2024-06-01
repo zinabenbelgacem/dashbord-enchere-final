@@ -11,7 +11,7 @@ interface Enchere {
   id?: number;
   dateDebut: string;
   dateFin: string;
-  parten: { id: number}; 
+ // parten: { id: number}; 
   admin: { id: number };
   articles: { id: number }[];
 }
@@ -55,7 +55,6 @@ enchereEnCours: any;
   public showAddForm: boolean = false; 
   public formattedDateDebut!: string;
   public formattedDateFin!: string;
-  //private unsubscribe$ = new Subject<void>();
   updatedArticles: any = {};
   constructor(private http: HttpClient,
     private formBuilder: FormBuilder,
@@ -68,7 +67,7 @@ enchereEnCours: any;
       id: [0],
       dateFin: [new Date()],
       dateDebut: [new Date()],
-      parten: ['', Validators.required], 
+     // parten: ['', Validators.required], 
       admin: ['', Validators.required], 
       articles: this.formBuilder.control([]) // Utilisez control au lieu de array
     });
@@ -77,7 +76,7 @@ enchereEnCours: any;
       id: [0],
       dateFin: [new Date()],
       dateDebut: [new Date()],
-      parten: ['', Validators.required], 
+     // parten: ['', Validators.required], 
       admin: ['', Validators.required], 
       articles: this.formBuilder.control(['']), // Contrôle pour les articles
       updatedArticles: this.formBuilder.control('') // Ajoutez ce contrôle pour les articles mis à jour
@@ -173,32 +172,7 @@ addSelectedArticle(articleId: number) {
       }
     );
   }
-  /*getAllEncheres() {
-    this.loading = true;
-    this.encherService.getAllEncheres().subscribe(
-      (encheres: Enchere[]) => {
-        this.encheres = encheres;
-        console.log("Enchères récupérées :", encheres); // Afficher toutes les enchères récupérées dans la console
-        // Parcourir chaque enchère pour afficher l'ID de l'administrateur
-        encheres.forEach(enchere => {
-          if (enchere.admin && enchere.admin.id) {
-            console.log("ID de l'administrateur pour cette enchère :", enchere.admin.id);
-          } else {
-            console.log("Aucun administrateur associé à cette enchère.");
-          }
-
-        });
-        this.loading = false;
-      },
-      (error: HttpErrorResponse) => {
-        console.error('Error fetching encheres:', error);
-        this.loading = false;
-        this.snackBar.open('Error loading encheres!', 'Close', {
-          duration: 3000
-        });
-      }
-    );
-  }  */
+  
   getAllEncheres() {
     this.loading = true;
     this.encherService.getAllEncheres().subscribe(
@@ -206,7 +180,7 @@ addSelectedArticle(articleId: number) {
         this.encheres = encheres;
         // Accédez à la propriété parten de chaque objet Enchere pour forcer le chargement
         this.encheres.forEach(enchere => {
-          const parten = enchere.parten;
+          /*const parten = enchere.parten;
           if (parten && parten.id) {
             console.log("Partenaire chargé pour l'enchère :", parten);
           }
@@ -214,7 +188,7 @@ addSelectedArticle(articleId: number) {
             console.log("ID de l'administrateur pour cette enchère :", enchere.admin.id);
           } else {
             console.log("Aucun administrateur associé à cette enchère.");
-          }
+          }*/
         });
 
         console.log("Enchères récupérées :", encheres);
@@ -282,7 +256,7 @@ participerEnchere(userId: number, enchereId: number) {
           id: this.myForm.value.id,
           dateFin: this.formattedDateFin,
           dateDebut: this.formattedDateDebut,
-          parten: { id: selectedUser.id },
+         // parten: { id: selectedUser.id },
           admin: { id: selectedAdmin.id },
           articles: this.myForm.value.articles.map((article: any) => ({ id: article.id }))
         };
@@ -320,7 +294,7 @@ onSubmit() {
         id: this.editForm.value.id,
         dateFin: this.editForm.value.dateFin,
         dateDebut: this.editForm.value.dateDebut,
-        parten: { id: this.editForm.value.parten },
+       // parten: { id: this.editForm.value.parten },
         admin: { id: this.editForm.value.admin },
         // Utilisez l'ID de l'article sélectionné à partir de la liste des articles dans le formulaire
         articles: [{ id: this.editForm.value.articles }]
@@ -362,7 +336,7 @@ onSubmit() {
                 id: this.myForm.value.id,
                 dateFin: this.myForm.value.dateFin,
                 dateDebut: this.myForm.value.dateDebut,
-                parten: { id: this.myForm.value.parten },
+                //parten: { id: this.myForm.value.parten },
                 admin: { id: this.myForm.value.admin },
                 articles: this.myForm.value.articles.map((articleId: number) => ({ id: articleId }))
             };
@@ -420,7 +394,7 @@ updateArticle(articles: { id: number }[], enchereId: number): void {
       id: enchere.id,
       dateFin: enchere.dateFin,
       dateDebut: enchere.dateDebut,
-      parten: enchere.parten.id, // Utilisez l'ID de l'utilisateur au lieu de l'objet complet
+     // parten: enchere.parten.id, // Utilisez l'ID de l'utilisateur au lieu de l'objet complet
       admin: enchere.admin.id, // Utilisez l'ID de l'administrateur au lieu de l'objet complet
       articles: enchere.articles ? enchere.articles.map(article => article.id) : [] // Vérifiez si enchere.articles est défini avant de mapper
     });

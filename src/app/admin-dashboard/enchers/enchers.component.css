@@ -23,19 +23,89 @@
 
 .form-container {
   width: 60%;
-  top: 50%;
+  top: 52%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+.form-group.row {
+  background-color: #fff; /* White background color */
+  padding: 15px 20px; /* Adjust padding for spacing */
+}
+.form-group.row {
+  background-color: #fff; /* White background color */
+  padding: 15px 20px; /* Adjust padding for spacing */
+}
+
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  background: #fff; /* Lighten calendar icon background */
+  border: 1px solid #ccc; /* Add a subtle border to the calendar icon */
+  cursor: pointer; /* Make the calendar icon clickable */
+}
+.form-group.row {
+  background-color: #fff; /* Light background color for the rows */
+  border-radius: 4px; /* Subtle rounded corners */
+  padding: 12px 16px; /* Adjust padding for spacing */
+  display: flex; /* Enable flexbox layout for better alignment */
+  align-items: center; /* Center the labels and input groups vertically */
+}
+
+.col-form-label {
+  flex: 0 0 auto; /* Allow labels to wrap to multiple lines if needed */
+  text-align: right; /* Align labels to the right for a consistent layout */
+  padding-right: 10px; /* Spacing between label and input group */
+  font-weight: bold; /* Bold font for labels */
+  color: #333; /* Darker text color for better contrast */
+}
+
+.datepicker-container {
+  flex: 1 1 auto; /* Allow input groups to expand */
+  position: relative; /* Enable positioning for the calendar icon */
+}
+
+.form-control {
+  border: 1px solid #ddd; /* Light border for inputs */
+  border-radius: 4px; /* Consistent rounded corners */
+  padding: 8px 12px; /* Adjust padding for better spacing */
+  font-size: 14px; /* Consistent font size */
+  color: #333; /* Darker text color for better contrast */
+}
+
+.form-control:focus {
+  outline: none; /* Remove default outline */
+  border-color: #007bff; /* Blue border on focus */
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2); /* Subtle blue shadow on focus */
+}
+
+.input-group-text {
+  display: none; /* Hide the default calendar icon (optional) */
+}
+
+/* Optional: Add a custom calendar icon using Font Awesome */
+.datepicker-container:after {
+  content: "\f073"; /* Font Awesome calendar icon code */
+  font-family: FontAwesome; /* Replace with your font family if needed */
+  font-size: 16px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%); /* Center the icon vertically */
+  right: 10px; /* Spacing between icon and input border */
+  color: #999; /* Light gray color for the icon */
+  cursor: pointer; /* Indicate clickable icon */
+}
+
+.input-group-text {
+  /* Existing styles */
+  padding-left: 10px; /* Adjust padding for left shift */
 }
 
 /* Styles pour les petits écrans */
 @media (max-width: 768px) {
   .container {
-    margin-top: 20%;
+    margin-top: 21%;
   }
 
   .form-container {
-    width: 80%;
+    width: 70%;
   }
 }
 
@@ -82,7 +152,7 @@
   }
 }
 .table{
-  margin-left: 20%;
+  margin-left: 19%;
   margin-top: -74rem; 
    height: 10%;
    width: 71%;
@@ -93,7 +163,8 @@
   border-spacing: 40px; /* Adjust spacing as needed */
 }
 .header {
-  margin-top: 40px;
+  margin-top: 25px;
+  margin-left: 8%;
   text-align: center ;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 24px; /* Ajustez la taille de la police selon vos préférences */
@@ -147,7 +218,7 @@
 }
 .form-containerr{
     position: absolute;
-    top: 65%;
+    top: 63%;
     left: 56%;
     margin-left: 5px;
     transform: translate(-50%, -50%);
@@ -161,7 +232,7 @@
  
   .form-container {
     position: absolute;
-    top: 59.5%;
+    top: 64%;
     left: 55%;
     margin-left: 10px;
     transform: translate(-50%, -50%);

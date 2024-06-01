@@ -10,16 +10,6 @@ export class SidebarComponent {
 
   public links: any = [
     {
-      title: 'Dashboard',
-      items: [
-        {
-          name: 'overview',
-          icon: 'fa-solid fa-house',
-        }
-      ],
-    },
-
-    {
       title: 'Pages',
       items: [
         {
@@ -41,82 +31,21 @@ export class SidebarComponent {
           name: 'demande-vendeur',
           icon: 'fa-solid fa-file-alt' 
         },
-        {
+       /* {
           name: 'paiment',
           icon: 'fa-solid fa-credit-card',
-        },
+        },*/
+        
         {
-          name: 'parten',
-          icon: 'fa-solid fa-handshake',
-        },
-        {
-          name: 'commentaire',
+          name: 'commentaires',
           icon: 'fa-solid fa-comment',
         },
-       /*{
-          name: 'tags',
-          icon: 'fa-solid fa-tag'
-        },
+    
         {
-          name: 'tags',
-          icon: 'fa-solid fa-wallet' 
-        },
-        {
-          name: 'tags',
-          icon: 'fa-solid fa-coins' 
-        },
-        {
-          name: 'tags',
-          icon: 'fa-solid fa-users-cog' 
+          name: 'signalisation',
+          icon: 'fas fa-exclamation-triangle' 
         }
-        ,
-        {
-          name: 'tags',
-          icon: 'fa-solid fa-shopping-bag' 
-        }
-        ,
-        {
-          name: 'tags',
-          icon: 'fa-solid fa-cube' 
-        }
-        ,
-        {
-          name: 'tags',
-          icon: 'fa-solid fa-gift' 
-        }
-        ,
-        {
-          name: 'tags',
-          icon: 'fa-solid fa-cogs' 
-        }
-        ,*/
-        {
-          name: 'livraison',
-          icon: 'fa-solid fa-truck' 
-        }
-        /*,
-        {
-          name: 'livraison',
-          icon: 'fa-solid fa-shopping-cart' 
-        }
-        ,
-        {
-          name: 'livraison',
-          icon: 'fa-solid fa-archive' 
-        }
-        ,
-        {
-          name: 'livraison',
-          icon: 'fa-solid fa-file-alt' 
-        }
-        ,
-        {
-          name: 'livraison',
-        //  icon: 'fa-solid fa-envelope',  icon: 'fa-solid fa-comment-dollar' 
-       // icon: 'fa-solid fa-bullhorn' 
-      // icon: 'fa-solid fa-comments-dollar'
-      icon: 'fa-solid fa-user-tie'
-        }*/
+
       
       ],
     },
